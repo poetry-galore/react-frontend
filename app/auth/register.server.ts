@@ -10,9 +10,9 @@ export type RegisterForm = {
 
 /**
  * Creates a new user if none exists with the given data.
- * 
+ *
  * @param user User data from the register form
- * @returns 
+ * @returns
  */
 export async function register(user: RegisterForm) {
   const exists = await prisma.user.count({ where: { email: user.email } });

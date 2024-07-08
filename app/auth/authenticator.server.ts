@@ -27,7 +27,7 @@ authenticator.use(
 
     return { userId: user.id, email: user.email };
   }),
-  EMAIL_PASSWORD_STRATEGY
+  EMAIL_PASSWORD_STRATEGY,
 );
 
 /**

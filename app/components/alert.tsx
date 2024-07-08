@@ -43,7 +43,7 @@ export function AlertInfo({ title, description, className }: AlertProps) {
       variant="default"
       className={cn(
         "flex justify-center items-center space-x-2 border-none bg-primary/70 dark:bg-primary/70 h-10",
-        className
+        className,
       )}
     >
       <div className="pt-1">

@@ -26,7 +26,7 @@ export function AuthCard({
     <Card
       className={cn(
         "w-11/12 md:w-[450px] shadow-none rounded-xl dark:bg-dark border-none",
-        className
+        className,
       )}
     >
       {(title || description) && (
