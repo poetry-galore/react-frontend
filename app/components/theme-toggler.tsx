@@ -16,7 +16,7 @@ export function ThemeToggle({ className }: ButtonHTMLAttributes<Props>) {
   return (
     <Button
       className={cn(
-        "ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 h-8 w-8 hover:dark:bg-dark",
+        "ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 h-8 w-8 hover:bg-inherit dark:hover:bg-inherit",
         className
       )}
       variant="ghost"

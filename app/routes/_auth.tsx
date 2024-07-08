@@ -85,7 +85,7 @@ export default function AuthLayout() {
 
       <div className="relative w-full h-full flex justify-center items-center">
         <div className="relative hidden lg:flex flex-col justify-start items-end w-1/2 h-full bg-[#18181b] dark:bg-[#18181b] text-white">
-          <ThemeToggle className="m-2 hover:bg-inherit hover:text-white dark:hover:bg-inherit" />
+          <ThemeToggle className="m-2 hover:text-white" />
           <Link to="/">
             <LogoFull
               className="w-1/2 absolute top-10 left-5"
