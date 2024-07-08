@@ -1,3 +1,5 @@
+import { Config } from "tailwindcss";
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -12,6 +14,13 @@ module.exports = {
       },
     },
     extend: {
+      backgroundColor: {
+        dark: "#09090b",
+        primary: "#00d1cd"
+      },
+      textColor: {
+        primary: "#00d1cd",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -29,4 +38,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-};
+} as Config;

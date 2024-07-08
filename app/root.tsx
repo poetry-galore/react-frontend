@@ -4,7 +4,7 @@ import {
   ThemeProvider,
   useTheme,
 } from "remix-themes";
-import { LoaderFunctionArgs } from "@remix-run/node";
+import { json, LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import {
   Links,
   Meta,
@@ -12,22 +12,43 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useLocation,
 } from "@remix-run/react";
 
-import { themeSessionResolver } from "./theme/session.server";
-import "./tailwind.css";
+// CSS
+import "~/tailwind.css";
+
+// Components
+import Navbar from "~/components/navbar";
+
+// Authentication
+import { authenticator } from "~/auth/authenticator.server";
+
+// Theme
+import { themeSessionResolver } from "~/theme/session.server";
+
+export const links: LinksFunction = () => [{ rel: "icon", href: "/icon.svg" }];
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const { getTheme } = await themeSessionResolver(request);
+  const clonedRequest = request.clone();
 
-  return {
+  const { getTheme } = await themeSessionResolver(request);
+  const user = await authenticator.isAuthenticated(clonedRequest);
+
+  return json({
     theme: getTheme(),
-  };
+    user: user,
+  });
 }
+
+const RegisterAndLoginPaths = ["/register", "/login"];
 
 export function App() {
   const data = useLoaderData<typeof loader>();
   const [theme] = useTheme();
+  const location = useLocation();
+
+  const isRegisterOrLogin = RegisterAndLoginPaths.includes(location.pathname);
 
   return (
     <html lang="en" className={clsx(theme)}>
@@ -38,7 +59,8 @@ export function App() {
         <PreventFlashOnWrongTheme ssrTheme={Boolean(data.theme)} />
         <Links />
       </head>
-      <body className="text-slate-800 bg-white dark:text-slate-100 dark:bg-gray-900 h-dvh">
+      <body className="text-slate-800 bg-white dark:text-slate-100 dark:bg-dark h-dvh">
+        {!isRegisterOrLogin && <Navbar loggedUser={data.user} />}
         <Outlet />
         <ScrollRestoration />
         <Scripts />

@@ -1,17 +1,24 @@
 import { Moon, Sun } from "lucide-react";
 import { Theme, useTheme } from "remix-themes";
+import { ButtonHTMLAttributes } from "react";
 
 import { Button } from "~/components/ui/button";
+import { cn } from "~/lib/utils";
+
+type Props = {};
 
 /**
  * Toggle theme between light & dark modes.
  */
-export function ThemeToggle() {
+export function ThemeToggle({ className }: ButtonHTMLAttributes<Props>) {
   const [theme, setTheme] = useTheme();
 
   return (
     <Button
-      className="ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 h-8 w-8"
+      className={cn(
+        "ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 h-8 w-8",
+        className
+      )}
       variant="ghost"
       size="icon"
       onClick={() => setTheme(theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT)}
