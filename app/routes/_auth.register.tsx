@@ -1,4 +1,4 @@
-import type { ActionFunction, LoaderFunction } from "@remix-run/node";
+import type { ActionFunction, LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { withZod } from "@remix-validated-form/with-zod";
 import { ValidatedForm, validationError } from "remix-validated-form";
@@ -18,6 +18,13 @@ import {
 } from "~/auth/authenticator.server";
 
 const validator = withZod(userSchemaRegister);
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Register" },
+    { name: "description", content: "Registration page for Poetry Galore" },
+  ];
+};
 
 export const loader: LoaderFunction = async ({ request }) => {
   await authenticator.isAuthenticated(request, {

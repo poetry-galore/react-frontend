@@ -1,4 +1,4 @@
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { json, useLoaderData } from "@remix-run/react";
 import { withZod } from "@remix-validated-form/with-zod";
 import { ValidatedForm } from "remix-validated-form";
@@ -16,6 +16,13 @@ import {
 import { userSchemaLogin } from "~/auth/authSchema";
 
 const validator = withZod(userSchemaLogin);
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Login" },
+    { name: "description", content: "Login page for Poetry Galore" },
+  ];
+};
 
 export async function action({ request }: ActionFunctionArgs) {
   const clonedRequest = request.clone();
