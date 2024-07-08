@@ -17,6 +17,7 @@ import { Button } from "~/components/ui/button";
 // Authentication
 import { authenticator } from "~/auth/authenticator.server";
 import { getSession, commitSession } from "~/auth/session.server";
+import { ThemeToggle } from "~/components/theme-toggler";
 
 /**
  * Checks for authenticated users and also errors that may have risen
@@ -83,20 +84,20 @@ export default function AuthLayout() {
       )}
 
       <div className="relative w-full h-full flex justify-center items-center">
-        <div className="relative hidden lg:flex flex-col justify-center w-1/2 h-full bg-[#18181b] dark:bg-[#18181b] text-white">
-          <div className="m-10">
-            <Link to="/">
-              <LogoFull
-                className="w-1/2 absolute top-10"
-                themeOverride={Theme.DARK}
-              />
-            </Link>
-          </div>
+        <div className="relative hidden lg:flex flex-col justify-start items-end w-1/2 h-full bg-[#18181b] dark:bg-[#18181b] text-white">
+          <ThemeToggle className="m-2 hover:bg-inherit hover:text-white dark:hover:bg-inherit" />
+          <Link to="/">
+            <LogoFull
+              className="w-1/2 absolute top-10 left-5"
+              themeOverride={Theme.DARK}
+            />
+          </Link>
           <div className="absolute bottom-10 right-10 text-base xl:text-lg 2xl:text-xl font-mono italic font-thin">
             Enjoy creating and reading poems.
           </div>
         </div>
 
+        <ThemeToggle className="absolute top-2 left-2 lg:hidden m-1" />
         <div className="relative w-full sm:w-2/3 flex flex-col items-center justify-center">
           <div className="relative w-full text-center">
             {errorValue && (
