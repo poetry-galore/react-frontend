@@ -84,7 +84,7 @@ export default function AuthLayout() {
       )}
 
       <div className="relative w-full h-full flex justify-center items-center">
-        <div className="relative hidden lg:flex flex-col justify-start items-end w-1/2 h-full bg-[#18181b] dark:bg-[#18181b] text-white">
+        <div className="relative hidden lg:flex flex-col justify-start items-end w-1/2 h-full bg-slate-800 dark:bg-slate-800 text-white">
           <ThemeToggle className="m-2 hover:text-white" />
           <Link to="/">
             <LogoFull
