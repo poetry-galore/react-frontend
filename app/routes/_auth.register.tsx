@@ -1,4 +1,8 @@
-import type { ActionFunction, LoaderFunction, MetaFunction } from "@remix-run/node";
+import type {
+  ActionFunction,
+  LoaderFunction,
+  MetaFunction,
+} from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { withZod } from "@remix-validated-form/with-zod";
 import { ValidatedForm, validationError } from "remix-validated-form";
@@ -16,6 +20,7 @@ import {
   EMAIL_PASSWORD_STRATEGY,
   authenticator,
 } from "~/auth/authenticator.server";
+import { commitSession, getSession } from "~/auth/session.server";
 
 const validator = withZod(userSchemaRegister);
 
@@ -46,7 +51,23 @@ export const action: ActionFunction = async ({ request }) => {
   const fieldValues = await validator.validate(formData);
   if (fieldValues.error) return validationError(fieldValues.error);
 
-  await register(fieldValues.data);
+  const error = await register(fieldValues.data);
+
+  if (error) {
+    const message = (await error.json()).error;
+
+    const session = await getSession(request.headers.get("cookie"));
+    session.set(authenticator.sessionErrorKey, { message });
+
+    return json(
+      error,
+      {
+        headers: {
+          "Set-Cookie": await commitSession(session),
+        },
+      }
+    );
+  }
 
   // TODO: New users are to be redirected to onboarding
   return await authenticator.authenticate(EMAIL_PASSWORD_STRATEGY, request, {
