@@ -1,4 +1,8 @@
-import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import type {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  MetaFunction,
+} from "@remix-run/node";
 import { json, useLoaderData } from "@remix-run/react";
 import { withZod } from "@remix-validated-form/with-zod";
 import { ValidatedForm } from "remix-validated-form";
@@ -12,8 +16,11 @@ import { Button } from "~/components/ui/button";
 import {
   EMAIL_PASSWORD_STRATEGY,
   authenticator,
+  clearAuthSessionError,
+  setAuthSessionError,
 } from "~/auth/authenticator.server";
 import { userSchemaLogin } from "~/auth/authSchema";
+import { commitSession } from "~/auth/session.server";
 
 const validator = withZod(userSchemaLogin);
 
@@ -29,9 +36,26 @@ export async function action({ request }: ActionFunctionArgs) {
 
   let redirectTo = (await clonedRequest.formData()).get("redirectTo") as string;
 
-  return await authenticator.authenticate(EMAIL_PASSWORD_STRATEGY, request, {
-    successRedirect: redirectTo,
-    failureRedirect: "/login",
+  try {
+    await authenticator.authenticate(EMAIL_PASSWORD_STRATEGY, request, {
+      successRedirect: redirectTo,
+      failureRedirect: "/login",
+    });
+  } catch (error: any) {
+    // Don't redirect when authentication fails
+    if (error.headers.get("location") !== "/login") {
+      return error;
+    }
+  }
+
+  const error = { message: "Invalid credentials" };
+
+  return json(error, {
+    headers: {
+      "Set-Cookie": await commitSession(
+        await setAuthSessionError(error, request),
+      ),
+    },
   });
 }
 
@@ -51,7 +75,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
     password: "",
   };
 
-  return json({ defaultValues, redirectTo });
+  return json(
+    { defaultValues, redirectTo },
+    {
+      headers: {
+        "Set-Cookie": await commitSession(await clearAuthSessionError(request)),
+      },
+    },
+  );
 }
 
 export default function Login() {

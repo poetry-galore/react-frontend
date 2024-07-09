@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import { Authenticator } from "remix-auth";
 import { FormStrategy } from "remix-auth-form";
 
-import { sessionStorage } from "~/auth/session.server";
+import { getSession, sessionStorage } from "~/auth/session.server";
 import { prisma } from "~/db/prisma.server";
 
 export type User = {
@@ -27,7 +27,7 @@ authenticator.use(
 
     return { userId: user.id, email: user.email };
   }),
-  EMAIL_PASSWORD_STRATEGY,
+  EMAIL_PASSWORD_STRATEGY
 );
 
 /**
@@ -44,4 +44,28 @@ export async function authenticationRequired(request: Request) {
   return await authenticator.isAuthenticated(request, {
     failureRedirect: `/login?${searchParams}`,
   });
+}
+
+/**
+ * Sets the `authenticator.sessionErrorKey` in the session to value.
+ *
+ * @param value The value to set
+ * @param request Request
+ * @returns New session with the sessionErrorKey set to value
+ */
+export async function setAuthSessionError(value: any, request: Request) {
+  const session = await getSession(request.headers.get("cookie"));
+  session.set(authenticator.sessionErrorKey, value);
+
+  return session;
+}
+
+/**
+ * Sets the `authenticator.sessionErrorKey` to `undefined`.
+ * 
+ * @param request Request
+ * @returns New session with the sessionErrorKey set to undefined
+ */
+export async function clearAuthSessionError(request: Request) {
+  return await setAuthSessionError(undefined, request);
 }

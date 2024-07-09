@@ -19,8 +19,10 @@ import { register } from "~/auth/register.server";
 import {
   EMAIL_PASSWORD_STRATEGY,
   authenticator,
+  clearAuthSessionError,
+  setAuthSessionError,
 } from "~/auth/authenticator.server";
-import { commitSession, getSession } from "~/auth/session.server";
+import { commitSession } from "~/auth/session.server";
 
 const validator = withZod(userSchemaRegister);
 
@@ -41,7 +43,14 @@ export const loader: LoaderFunction = async ({ request }) => {
     password: "",
   };
 
-  return json({ defaultValues });
+  return json(
+    { defaultValues },
+    {
+      headers: {
+        "Set-Cookie": await commitSession(await clearAuthSessionError(request)),
+      },
+    },
+  );
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -56,17 +65,13 @@ export const action: ActionFunction = async ({ request }) => {
   if (error) {
     const message = (await error.json()).error;
 
-    const session = await getSession(request.headers.get("cookie"));
-    session.set(authenticator.sessionErrorKey, { message });
-
-    return json(
-      error,
-      {
-        headers: {
-          "Set-Cookie": await commitSession(session),
-        },
-      }
-    );
+    return json(error, {
+      headers: {
+        "Set-Cookie": await commitSession(
+          await setAuthSessionError({ message }, request),
+        ),
+      },
+    });
   }
 
   // TODO: New users are to be redirected to onboarding
