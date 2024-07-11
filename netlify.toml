@@ -1,2 +1,19 @@
+[build]
+command = "npm run build"
+publish = "build/client"
+
 [build.environment]
-  NPM_CONFIG_USERCONFIG = ".npmrc-netlify"
+NPM_CONFIG_USERCONFIG = ".npmrc-netlify"
+
+[dev]
+command = "npm run dev"
+framework = "vite"
+
+# Set immutable caching for static files, because they have fingerprinted filenames
+
+[[headers]]
+for = "/build/*"
+
+[headers.values]
+
+"Cache-Control" = "public, max-age=31560000, immutable"

@@ -134,3 +134,6 @@ dist
 
 # Local Netlify folder
 .netlify
+
+.DS_Store
+/public/build
