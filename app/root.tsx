@@ -12,14 +12,10 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-  useLocation,
 } from "@remix-run/react";
 
 // CSS
 import "~/tailwind.css";
-
-// Components
-import Navbar from "~/components/navbar";
 
 // Authentication
 import { authenticator } from "~/auth/authenticator.server";
@@ -41,14 +37,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
   });
 }
 
-const RegisterAndLoginPaths = ["/register", "/login"];
-
 export function App() {
   const data = useLoaderData<typeof loader>();
   const [theme] = useTheme();
-  const location = useLocation();
-
-  const isRegisterOrLogin = RegisterAndLoginPaths.includes(location.pathname);
 
   return (
     <html lang="en" className={clsx(theme)}>
@@ -60,7 +51,6 @@ export function App() {
         <Links />
       </head>
       <body className="text-slate-800 bg-white dark:text-slate-100 dark:bg-dark h-dvh">
-        {!isRegisterOrLogin && <Navbar loggedUser={data.user} />}
         <Outlet />
         <ScrollRestoration />
         <Scripts />
