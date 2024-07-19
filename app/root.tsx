@@ -6,12 +6,14 @@ import {
 } from "remix-themes";
 import { json, LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import {
+  isRouteErrorResponse,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useRouteError,
 } from "@remix-run/react";
 
 // CSS
@@ -24,6 +26,41 @@ import { authenticator } from "~/auth/authenticator.server";
 import { themeSessionResolver } from "~/theme/session.server";
 
 export const links: LinksFunction = () => [{ rel: "icon", href: "/icon.svg" }];
+
+/**
+ * Error display
+ */
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  return (
+    <html>
+      <head>
+        <title>Error</title>
+        <Meta />
+        <Links />
+      </head>
+      <body className="text-slate-800 bg-white dark:text-slate-100 dark:bg-dark h-dvh">
+        {isRouteErrorResponse(error) ? (
+          <div>
+            <h1 className="text-xl font-bold">
+              {error.status} {error.statusText}
+            </h1>
+            <p>{error.data}</p>
+          </div>
+        ) : error instanceof Error ? (
+          <div>
+            <h1 className="text-xl font-bold">Error</h1>
+            <p>{error.message}</p>
+          </div>
+        ) : (
+          <h1>Unknown Error</h1>
+        )}
+        <Scripts />
+      </body>
+    </html>
+  );
+}
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const clonedRequest = request.clone();

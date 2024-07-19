@@ -30,3 +30,11 @@ export async function createUser(user: RegisterForm): Promise<UserOut> {
 
   return { id: newUser.id, email: newUser.email };
 }
+
+export async function getUserById(userId: string) {
+  return await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+}
