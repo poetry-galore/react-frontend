@@ -27,8 +27,18 @@ authenticator.use(
 
     return { userId: user.id, email: user.email };
   }),
-  EMAIL_PASSWORD_STRATEGY
+  EMAIL_PASSWORD_STRATEGY,
 );
+
+/**
+ * Gets the authenticated user if there is one
+ *
+ * @param request Request
+ * @returns Authenticated user else null.
+ */
+export async function authenticatedUser(request: Request) {
+  return await authenticator.isAuthenticated(request);
+}
 
 /**
  * Checks whether the user is authenticated and if not so redirects
@@ -62,7 +72,7 @@ export async function setAuthSessionError(value: any, request: Request) {
 
 /**
  * Sets the `authenticator.sessionErrorKey` to `undefined`.
- * 
+ *
  * @param request Request
  * @returns New session with the sessionErrorKey set to undefined
  */

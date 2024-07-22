@@ -1,14 +1,24 @@
-import { Form, Link } from "@remix-run/react";
+import { Form, Link, useLocation } from "@remix-run/react";
 
-import type { User } from "~/auth/authenticator.server";
-
+// Components
 import { LogInIcon, LogOutIcon } from "lucide-react";
 import { ThemeToggle } from "~/components/theme-toggler";
 import { Button } from "~/components/ui/button";
+import { NavbarLogo } from "~/components/logo";
 
-import { NavbarLogo } from "./logo";
+// Authentication
+import type { User } from "~/auth/authenticator.server";
+
+// ROUTES
+/**
+ * Route to the page where to create a new poem
+ */
+const NEW_POEM_ROUTE = "/poem/new";
 
 type NavbarProps = {
+  /**
+   * Current logged user
+   */
   loggedUser?: User | null;
 };
 
@@ -16,6 +26,8 @@ type NavbarProps = {
  * Navigation bar
  */
 export default function Navbar({ loggedUser }: NavbarProps) {
+  const location = useLocation();
+
   return (
     <div className="lg:w-2/3 mx-auto my-5 flex justify-between  bg-white h-20 dark:bg-dark">
       <div className="flex items-center ms-1 sm:ms-2 md:ms-4 lg:ms-0">
@@ -28,6 +40,20 @@ export default function Navbar({ loggedUser }: NavbarProps) {
 
       <div className="flex justify-end items-center me-1 sm:me-2 md:me-4 lg:me-0">
         <ThemeToggle className="me-1 lg:me-4" />
+
+        {/** Create new poem button */}
+        {loggedUser && location.pathname !== NEW_POEM_ROUTE && (
+          <Link to={NEW_POEM_ROUTE}>
+            <Button
+              size={"default"}
+              className="px-2 me-3 text-base font-semibold hover:text-primary dark:hover:text-primary"
+              variant={"secondary"}
+            >
+              Create New
+            </Button>
+          </Link>
+        )}
+
         {loggedUser ? (
           <Form method="post" action="/logout" className="group/logout">
             <Button
