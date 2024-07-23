@@ -36,7 +36,7 @@
     "remix-auth-form": "^1.5.0",
     "remix-themes": "^1.4.0",
     "remix-validated-form": "^5.1.5",
-    "tailwind-merge": "^2.3.0",
+    "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8"
   },
