@@ -5,6 +5,19 @@ import { LogInIcon, LogOutIcon } from "lucide-react";
 import { ThemeToggle } from "~/components/theme-toggler";
 import { Button } from "~/components/ui/button";
 import { NavbarLogo } from "~/components/logo";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "~/components/ui/sheet";
+import { Input } from "~/components/ui/input"
+
+
+
 
 // Authentication
 import type { User } from "~/auth/authenticator.server";
@@ -55,16 +68,40 @@ export default function Navbar({ loggedUser }: NavbarProps) {
         )}
 
         {loggedUser ? (
-          <Form method="post" action="/logout" className="group/logout">
-            <Button
-              size={"default"}
-              className="text-lg font-semibold border-none text-red-500 bg-white hover:bg-white hover:text-red-400 rounded-lg dark:text-red-500 dark:bg-inherit hover:dark:bg-inherit hover:dark:text-red-400"
-              variant={"default"}
-              type="submit"
-            >
-              Logout{" "}
-              <LogOutIcon className="ms-1 w-4 h-4 group-hover/logout:translate-x-1.5 group-hover/logout:scale-110 duration-300 motion-reduce:scale-0 motion-reduce:translate-x-0" />
-            </Button>
+          <Form method="post" action="/logout" className="group/logout flex">
+            <Sheet>
+              <SheetTrigger>
+                <Avatar>
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>User Profile</SheetTitle>
+                  <SheetDescription>
+                    Make changes to your profile
+                  </SheetDescription>
+                </SheetHeader>
+
+                <Link to="logout" className="group/logout">
+                  <Button
+                    size={"default"}
+                    className="text-lg font-semibold border-none text-red-500 bg-white hover:bg-white hover:text-red-400 rounded-lg dark:text-red-500 dark:bg-inherit hover:dark:bg-inherit hover:dark:text-red-400"
+                    variant={"default"}
+                    type="submit"
+                  >
+                    Logout{" "}
+                    <LogOutIcon className="ms-1 w-4 h-4 group-hover/logout:translate-x-1.5 group-hover/logout:scale-110 duration-300 motion-reduce:scale-0 motion-reduce:translate-x-0" />
+                  </Button>
+                </Link>
+                
+                  <Input type="text" placeholder="username"/>
+                  <Input type="email" placeholder="email"/>
+              </SheetContent>
+            </Sheet>
+
+
           </Form>
         ) : (
           <Link to="login" className="group/login">

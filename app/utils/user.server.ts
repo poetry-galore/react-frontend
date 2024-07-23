@@ -30,3 +30,19 @@ export async function createUser(user: RegisterForm): Promise<UserOut> {
 
   return { id: newUser.id, email: newUser.email };
 }
+
+//subject to change
+export async function updateUser(user: RegisterForm): Promise<UserOut> {
+  const passwordHash = await bcrypt.hash(user.password, 10);
+  const userId = '';
+
+  const updatedUser = await prisma.user.update({
+    where: {id: userId},
+    data: {
+      email: user.email,
+      password: passwordHash,
+    },
+  });
+
+  return { id: updatedUser.id, email: updatedUser.email}
+}
