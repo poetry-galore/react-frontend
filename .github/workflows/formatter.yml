@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: 20
 
-      - run: npm install --only=dev
+      - run: mv package.json _package.json && npm i $(node -e "let d=require('./_package.json').devDependencies,o='';Object.keys(d).forEach((e=>{o+=e+'@'+d[e]+' '})),console.log(o);") && mv _package.json package.json
       - run: npm run format:write
 
       - name: Commit changes
