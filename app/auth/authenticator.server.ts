@@ -27,7 +27,7 @@ authenticator.use(
 
     return { userId: user.id, email: user.email };
   }),
-  EMAIL_PASSWORD_STRATEGY
+  EMAIL_PASSWORD_STRATEGY,
 );
 
 /**
@@ -62,7 +62,7 @@ export async function setAuthSessionError(value: any, request: Request) {
 
 /**
  * Sets the `authenticator.sessionErrorKey` to `undefined`.
- * 
+ *
  * @param request Request
  * @returns New session with the sessionErrorKey set to undefined
  */

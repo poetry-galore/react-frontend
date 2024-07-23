@@ -20,7 +20,7 @@ export async function register(user: RegisterForm) {
   if (exists) {
     return json(
       { error: `User already exists with that email` },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -32,7 +32,7 @@ export async function register(user: RegisterForm) {
         error: "Something went wrong creating new user",
         fields: { email: user.email, password: user.password },
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
