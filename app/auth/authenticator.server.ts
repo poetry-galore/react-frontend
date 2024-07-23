@@ -31,6 +31,16 @@ authenticator.use(
 );
 
 /**
+ * Gets the authenticated user if there is one
+ *
+ * @param request Request
+ * @returns Authenticated user else null.
+ */
+export async function authenticatedUser(request: Request) {
+  return await authenticator.isAuthenticated(request);
+}
+
+/**
  * Checks whether the user is authenticated and if not so redirects
  * to the `/login` page with the requested pathname in the `redirectTo`
  * search parameter.
