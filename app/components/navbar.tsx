@@ -67,7 +67,7 @@ export default function Navbar({ loggedUser }: NavbarProps) {
             </Button>
           </Form>
         ) : (
-          <Link to="login" className="group/login">
+          <Link to="/login" className="group/login">
             <Button
               size={"default"}
               className="text-lg font-semibold border-none text-sky-500 bg-white hover:bg-white hover:text-primary rounded-lg dark:text-primary dark:bg-inherit hover:dark:bg-inherit hover:dark:text-sky-500"
