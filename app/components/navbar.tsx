@@ -5,7 +5,7 @@ import { LogInIcon, LogOutIcon } from "lucide-react";
 import { ThemeToggle } from "~/components/theme-toggler";
 import { Button } from "~/components/ui/button";
 import { NavbarLogo } from "~/components/logo";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import {
   Sheet,
   SheetContent,
@@ -14,10 +14,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "~/components/ui/sheet";
-import { Input } from "~/components/ui/input"
-
-
-
+import { Input } from "~/components/ui/input";
 
 // Authentication
 import type { User } from "~/auth/authenticator.server";
@@ -72,10 +69,10 @@ export default function Navbar({ loggedUser }: NavbarProps) {
             <Sheet>
               <SheetTrigger>
                 <Link to="/profile">
-                <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
+                  <Avatar>
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
                 </Link>
               </SheetTrigger>
               <SheetContent>
@@ -97,13 +94,11 @@ export default function Navbar({ loggedUser }: NavbarProps) {
                     <LogOutIcon className="ms-1 w-4 h-4 group-hover/logout:translate-x-1.5 group-hover/logout:scale-110 duration-300 motion-reduce:scale-0 motion-reduce:translate-x-0" />
                   </Button>
                 </Link>
-                
-                  <Input type="text" placeholder="username"/>
-                  <Input type="email" placeholder="email"/>
+
+                <Input type="text" placeholder="username" />
+                <Input type="email" placeholder="email" />
               </SheetContent>
             </Sheet>
-
-
           </Form>
         ) : (
           <Link to="login" className="group/login">
