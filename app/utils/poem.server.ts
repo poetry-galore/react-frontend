@@ -71,3 +71,13 @@ export async function getPoemWithId(poemId: string): Promise<Poem | null> {
 export async function updatePoem(poemId: string, poemUpdate: PoemUpdateType) {
   return await prisma.poem.update({ where: { id: poemId }, data: poemUpdate });
 }
+
+/**
+ * Deletes a poem with the given id.
+ *
+ * @param poemId Id of the poem to delete
+ * @returns The deleted poem
+ */
+export async function deletePoem(poemId: string) {
+  return await prisma.poem.delete({ where: { id: poemId } });
+}

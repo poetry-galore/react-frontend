@@ -1,5 +1,5 @@
 import { json, LoaderFunctionArgs } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { Form, Link, useLoaderData } from "@remix-run/react";
 
 // Components
 import Navbar from "~/components/navbar";
@@ -33,11 +33,17 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   try {
     if (poemId) poem = await getPoemWithId(poemId);
   } catch (error: any) {
+    console.error(error);
+
     if (error instanceof PrismaClientKnownRequestError) {
       throw new Response(null, { status: 404, statusText: "Poem not found" });
     } else {
       throw error;
     }
+  }
+
+  if (!poem) {
+    throw new Response(null, { status: 404, statusText: "Poem not found" });
   }
 
   const user = await authenticatedUser(request);
@@ -58,16 +64,44 @@ export default function ShowPoem() {
             {/** Parse and display the poem content */}
             <Markup content={poem?.content} />
 
-            {/** Edit Button */}
-            <Link to={EDIT_POEM_ROUTE(poem.id)}>
-              <Button
-                size={"sm"}
-                className="my-4 me-3 text-base font-semibold hover:text-primary dark:hover:text-primary"
-                variant={"secondary"}
-              >
-                Edit
-              </Button>
-            </Link>
+            {/** Show action buttons if user is logged in and is the author */}
+            {user && user.userId === poem.authorId && (
+              <>
+                {/** Edit Button */}
+                <Link to={EDIT_POEM_ROUTE(poem.id)}>
+                  <Button
+                    size={"sm"}
+                    className="my-4 me-3 text-base font-semibold hover:text-primary dark:hover:text-primary"
+                    variant={"secondary"}
+                  >
+                    Edit
+                  </Button>
+                </Link>
+
+                {/** Delete */}
+                <Form
+                  action="delete"
+                  method="post"
+                  onSubmit={(event) => {
+                    const response = confirm(
+                      "Please confirm you want to delete this poem.",
+                    );
+                    if (!response) {
+                      event.preventDefault();
+                    }
+                  }}
+                >
+                  <Button
+                    size={"sm"}
+                    className="my-4 me-3 text-base font-semibold hover:text-primary dark:hover:text-primary"
+                    variant={"ghost"}
+                    type="submit"
+                  >
+                    Delete
+                  </Button>
+                </Form>
+              </>
+            )}
           </>
         )}
       </div>
