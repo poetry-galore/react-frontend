@@ -15,6 +15,12 @@ export type PoemCreateType = {
   authorId: string;
 };
 
+export type PoemUpdateType = {
+  content: string;
+  title: string;
+  description?: string;
+};
+
 /**
  * Type of the return value of the createPoem function
  */
@@ -53,4 +59,15 @@ export async function createPoem(poemCreate: PoemCreateType): Promise<PoemOut> {
  */
 export async function getPoemWithId(poemId: string): Promise<Poem | null> {
   return await prisma.poem.findUnique({ where: { id: poemId } });
+}
+
+/**
+ * Updates a poem with the given id with the poemUpdate data.
+ *
+ * @param poemId Id of the poem to update
+ * @param poemUpdate Poem Data to use for update
+ * @returns Updated poem.
+ */
+export async function updatePoem(poemId: string, poemUpdate: PoemUpdateType) {
+  return await prisma.poem.update({ where: { id: poemId }, data: poemUpdate });
 }
