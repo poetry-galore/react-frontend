@@ -71,10 +71,12 @@ export default function Navbar({ loggedUser }: NavbarProps) {
           <Form method="post" action="/logout" className="group/logout flex">
             <Sheet>
               <SheetTrigger>
+                <Link to="/profile">
                 <Avatar>
                   <AvatarImage src="https://github.com/shadcn.png" />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
+                </Link>
               </SheetTrigger>
               <SheetContent>
                 <SheetHeader>
