@@ -68,32 +68,33 @@ export default function Navbar({ loggedUser }: NavbarProps) {
         )}
 
         {loggedUser ? (
-          <Form method="post" action="/logout" className="group/logout flex">
-            <Sheet>
-              <SheetTrigger>
-                <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </SheetTrigger>
-              <SheetContent>
-                <SheetHeader>
-                  <SheetTitle>{loggedUser.username ? loggedUser.username : "Username_unique"}</SheetTitle>
-                  <SheetDescription>
-                    Checkout your profile
-                  </SheetDescription>
-                </SheetHeader>
-                <div>
-                  <p> user-email: {loggedUser.email}</p>
-                  <p> user-Id: {loggedUser.userId}</p>
 
+          <Sheet>
+            <SheetTrigger>
+              <Avatar>
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle>{loggedUser.username ? loggedUser.username : "Username_unique"}</SheetTitle>
+                <SheetDescription>
+                  Checkout your profile
+                </SheetDescription>
+              </SheetHeader>
+              <div>
+                <p className="text-lg"> user-email: {loggedUser.email}</p>
+                <p className="text-lg"> user-Id: {loggedUser.userId}</p>
+
+                <Link to="profile">
                   <Button variant={'secondary'}>
                     Update profile
                   </Button>
-                </div>
+                </Link>
 
-
-
+              </div>
+              <Form method="post" action="/logout" className="group/logout flex">
                 <Link to="logout" className="group/logout">
                   <Button
                     size={"default"}
@@ -105,11 +106,11 @@ export default function Navbar({ loggedUser }: NavbarProps) {
                     <LogOutIcon className="ms-1 w-4 h-4 group-hover/logout:translate-x-1.5 group-hover/logout:scale-110 duration-300 motion-reduce:scale-0 motion-reduce:translate-x-0" />
                   </Button>
                 </Link>
-              </SheetContent>
-            </Sheet>
+              </Form>
 
+            </SheetContent>
+          </Sheet>
 
-          </Form>
         ) : (
           <Link to="login" className="group/login">
             <Button
