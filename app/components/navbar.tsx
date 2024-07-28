@@ -65,7 +65,6 @@ export default function Navbar({ loggedUser }: NavbarProps) {
         )}
 
         {loggedUser ? (
-
           <Sheet>
             <SheetTrigger>
               <Avatar>
@@ -75,23 +74,26 @@ export default function Navbar({ loggedUser }: NavbarProps) {
             </SheetTrigger>
             <SheetContent>
               <SheetHeader>
-                <SheetTitle>{loggedUser.username ? loggedUser.username : "Username_unique"}</SheetTitle>
-                <SheetDescription>
-                  Checkout your profile
-                </SheetDescription>
+                <SheetTitle>
+                  {loggedUser.username
+                    ? loggedUser.username
+                    : "Username_unique"}
+                </SheetTitle>
+                <SheetDescription>Checkout your profile</SheetDescription>
               </SheetHeader>
               <div>
                 <p className="text-lg"> user-email: {loggedUser.email}</p>
                 <p className="text-lg"> user-Id: {loggedUser.userId}</p>
 
                 <Link to="profile">
-                  <Button variant={'secondary'}>
-                    Update profile
-                  </Button>
+                  <Button variant={"secondary"}>Update profile</Button>
                 </Link>
-
               </div>
-              <Form method="post" action="/logout" className="group/logout flex">
+              <Form
+                method="post"
+                action="/logout"
+                className="group/logout flex"
+              >
                 <Link to="logout" className="group/logout">
                   <Button
                     size={"default"}
@@ -104,10 +106,8 @@ export default function Navbar({ loggedUser }: NavbarProps) {
                   </Button>
                 </Link>
               </Form>
-
             </SheetContent>
           </Sheet>
-
         ) : (
           <Link to="login" className="group/login">
             <Button
