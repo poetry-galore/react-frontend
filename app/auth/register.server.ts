@@ -4,6 +4,7 @@ import { prisma } from "~/db/prisma.server";
 import { createUser } from "~/utils/user.server";
 
 export type RegisterForm = {
+  username: string;
   email: string;
   password: string;
 };
@@ -30,7 +31,7 @@ export async function register(user: RegisterForm) {
     return json(
       {
         error: "Something went wrong creating new user",
-        fields: { email: user.email, password: user.password },
+        fields: { username: user.username ,email: user.email, password: user.password },
       },
       { status: 500 },
     );
