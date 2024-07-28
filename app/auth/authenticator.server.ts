@@ -6,6 +6,7 @@ import { getSession, sessionStorage } from "~/auth/session.server";
 import { prisma } from "~/db/prisma.server";
 
 export type User = {
+  username: string,
   userId: string;
   email: string;
 };
@@ -18,14 +19,15 @@ authenticator.use(
   new FormStrategy(async ({ form }) => {
     const email = form.get("email") as string;
     const password = form.get("password") as string;
+    const username = form.get("username") as string;
 
     const user = await prisma.user.findUnique({ where: { email: email } });
 
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+    if (!user || !(await bcrypt.compare(password, user.password)) || !username) {
       throw Error("Invalid credentials");
     }
 
-    return { userId: user.id, email: user.email };
+    return { userId: user.id, email: user.email, username: user.username };
   }),
   EMAIL_PASSWORD_STRATEGY,
 );

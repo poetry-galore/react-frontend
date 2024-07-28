@@ -71,20 +71,28 @@ export default function Navbar({ loggedUser }: NavbarProps) {
           <Form method="post" action="/logout" className="group/logout flex">
             <Sheet>
               <SheetTrigger>
-                <Link to="/profile">
                 <Avatar>
                   <AvatarImage src="https://github.com/shadcn.png" />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-                </Link>
               </SheetTrigger>
               <SheetContent>
                 <SheetHeader>
-                  <SheetTitle>User Profile</SheetTitle>
+                  <SheetTitle>{loggedUser.username ? loggedUser.username : "Username_unique"}</SheetTitle>
                   <SheetDescription>
-                    Make changes to your profile
+                    Checkout your profile
                   </SheetDescription>
                 </SheetHeader>
+                <div>
+                  <p> user-email: {loggedUser.email}</p>
+                  <p> user-Id: {loggedUser.userId}</p>
+
+                  <Button variant={'secondary'}>
+                    Update profile
+                  </Button>
+                </div>
+
+
 
                 <Link to="logout" className="group/logout">
                   <Button
@@ -97,9 +105,6 @@ export default function Navbar({ loggedUser }: NavbarProps) {
                     <LogOutIcon className="ms-1 w-4 h-4 group-hover/logout:translate-x-1.5 group-hover/logout:scale-110 duration-300 motion-reduce:scale-0 motion-reduce:translate-x-0" />
                   </Button>
                 </Link>
-                
-                  <Input type="text" placeholder="username"/>
-                  <Input type="email" placeholder="email"/>
               </SheetContent>
             </Sheet>
 

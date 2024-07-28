@@ -31,12 +31,13 @@ export async function createUser(user: RegisterForm): Promise<UserOut> {
 
   const newUser = await prisma.user.create({
     data: {
+      username: user.username,
       email: user.email,
       password: passwordHash,
     },
   });
 
-  return { id: newUser.id, email: newUser.email };
+  return  newUser ;
 }
 
 /**
