@@ -5,7 +5,7 @@ import { LogInIcon, LogOutIcon } from "lucide-react";
 import { ThemeToggle } from "~/components/theme-toggler";
 import { Button } from "~/components/ui/button";
 import { NavbarLogo } from "~/components/logo";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import {
   Sheet,
   SheetContent,
@@ -14,10 +14,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "~/components/ui/sheet";
-import { Input } from "~/components/ui/input"
-
-
-
+import { Input } from "~/components/ui/input";
 
 // Authentication
 import type { User } from "~/auth/authenticator.server";

@@ -57,7 +57,7 @@ export async function updateUser(user: RegisterForm): Promise<UpdatedUser> {
   );
 
   const updatedUser = await prisma.user.update({
-    where: {id: userId},
+    where: { id: userId },
     data: {
       email: user.email,
       password: passwordHash,

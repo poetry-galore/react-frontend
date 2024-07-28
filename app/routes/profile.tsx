@@ -1,5 +1,3 @@
-
-
 import { authenticationRequired } from "~/auth/authenticator.server";
 import {
   ActionFunctionArgs,
@@ -10,12 +8,16 @@ import {
 import { useLoaderData } from "@remix-run/react";
 import { Form, Link } from '@remix-run/react';
 // components
-import { Button } from "~/components/ui/button"
+
+
 import { Input } from "~/components/ui/input";
 
 
-export async function loader({ request }: LoaderFunctionArgs) {
 
+
+import { Button } from "~/components/ui/button";
+
+export async function loader({ request }: LoaderFunctionArgs) {
   const user = await authenticationRequired(request);
   return { user };
 }
