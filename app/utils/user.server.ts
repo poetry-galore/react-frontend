@@ -12,14 +12,13 @@ type UserOut = {
   email: string;
 };
 
-
 type UpdatedUser = {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    email: string;
-    password: string;
-}
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  email: string;
+  password: string;
+};
 /**
  * Creates a new user and adds them to the database.
  *
@@ -37,24 +36,24 @@ export async function createUser(user: RegisterForm): Promise<UserOut> {
     },
   });
 
-  return  newUser ;
+  return newUser;
 }
 
 /**
  * Updates the user information in the database
- * 
+ *
  * @param user User data
  * @returns Object of the new updated user.
- */ 
+ */
 export async function updateUser(user: RegisterForm): Promise<UpdatedUser> {
   const passwordHash = await bcrypt.hash(user.password, 10);
-  const userId = await prisma.user.findUnique({
-    where: {
-      email: user.email,
-    }
-  }).then(
-    (uSer) =>  uSer?.id
-  );
+  const userId = await prisma.user
+    .findUnique({
+      where: {
+        email: user.email,
+      },
+    })
+    .then((uSer) => uSer?.id);
 
   const updatedUser = await prisma.user.update({
     where: { id: userId },
@@ -64,5 +63,5 @@ export async function updateUser(user: RegisterForm): Promise<UpdatedUser> {
     },
   });
 
-  return  updatedUser 
+  return updatedUser;
 }

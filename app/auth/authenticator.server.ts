@@ -6,7 +6,7 @@ import { getSession, sessionStorage } from "~/auth/session.server";
 import { prisma } from "~/db/prisma.server";
 
 export type User = {
-  username: string,
+  username: string;
   userId: string;
   email: string;
 };
@@ -23,7 +23,11 @@ authenticator.use(
 
     const user = await prisma.user.findUnique({ where: { email: email } });
 
-    if (!user || !(await bcrypt.compare(password, user.password)) || !username) {
+    if (
+      !user ||
+      !(await bcrypt.compare(password, user.password)) ||
+      !username
+    ) {
       throw Error("Invalid credentials");
     }
 
