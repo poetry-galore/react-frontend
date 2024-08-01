@@ -4,6 +4,7 @@
 
 import bcrypt from "bcryptjs";
 
+
 import { RegisterForm } from "~/auth/register.server";
 import { prisma } from "~/db/prisma.server";
 
@@ -12,12 +13,30 @@ type UserOut = {
   email: string;
 };
 
+interface Details {
+  username: string;
+  profilePicture: string;
+  bio: string;
+  dateOfBirth: Date;
+  location: string;
+  gender: string;
+  penName: string;
+  languages: string[];
+  favoriteQuotes: string[];
+};
+
+type UpdateForm = {
+  email: string;
+  details: Details;
+};
+
 type UpdatedUser = {
   id: string;
   createdAt: Date;
   updatedAt: Date;
   email: string;
   password: string;
+  details: Details;
 };
 /**
  * Creates a new user and adds them to the database.
@@ -30,9 +49,19 @@ export async function createUser(user: RegisterForm): Promise<UserOut> {
 
   const newUser = await prisma.user.create({
     data: {
-      username: user.username,
       email: user.email,
       password: passwordHash,
+      details: JSON.stringify({
+        username: "Your name ...",
+        profilePicture: "",
+        bio: "A short description of yourself",
+        dateOfBirth: new Date(),
+        location: "Your present country and nearest city",
+        gender: "male, female or non-conforming",
+        penName: "A unique one!",
+        languages: ["English", "Kiswahili", "Spanish"],
+        favoriteQuotes: ["Just the first one is enough",]
+      })
     },
   });
 
@@ -45,8 +74,7 @@ export async function createUser(user: RegisterForm): Promise<UserOut> {
  * @param user User data
  * @returns Object of the new updated user.
  */
-export async function updateUser(user: RegisterForm): Promise<UpdatedUser> {
-  const passwordHash = await bcrypt.hash(user.password, 10);
+export async function updateUser(user: UpdateForm): Promise<UpdatedUser> {
   const userId = await prisma.user
     .findUnique({
       where: {
@@ -54,14 +82,19 @@ export async function updateUser(user: RegisterForm): Promise<UpdatedUser> {
       },
     })
     .then((uSer) => uSer?.id);
-
+  // consider using prisma.user.upsert for the documents that do not exist ???
+  
   const updatedUser = await prisma.user.update({
     where: { id: userId },
     data: {
       email: user.email,
-      password: passwordHash,
+      details: JSON.stringify(user.details),
     },
   });
 
-  return updatedUser;
+  const parsedDetails: Details = JSON.parse(updatedUser.details as unknown as string)
+  return {
+    ...updatedUser,
+    details: parsedDetails
+  } as UpdatedUser;
 }

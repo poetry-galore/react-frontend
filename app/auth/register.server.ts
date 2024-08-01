@@ -3,11 +3,25 @@ import { json } from "@remix-run/node";
 import { prisma } from "~/db/prisma.server";
 import { createUser } from "~/utils/user.server";
 
+
+interface Details {
+  username: String;
+  profilePicture: string;
+  bio?: string;
+  dateOfBirth: Date;
+  location?: string;
+  gender: "male" | "female" | "non-binary" | "other";
+  penName?: string;
+  languages: string[];
+  favoriteQuotes?: String[];
+};
+
 export type RegisterForm = {
-  username: string;
   email: string;
   password: string;
+  details? : Details;
 };
+
 
 /**
  * Creates a new user if none exists with the given data.
@@ -32,7 +46,6 @@ export async function register(user: RegisterForm) {
       {
         error: "Something went wrong creating new user",
         fields: {
-          username: user.username,
           email: user.email,
           password: user.password,
         },

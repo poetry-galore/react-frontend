@@ -94,12 +94,6 @@ export default function Register() {
           defaultValues={defaultValues}
         >
           <AuthInput
-            name="username"
-            label="username"
-            placeholder="Your username"
-            className="mb-4"
-          />
-          <AuthInput
             name="email"
             label="Email"
             placeholder="Your email..."
