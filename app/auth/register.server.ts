@@ -3,7 +3,6 @@ import { json } from "@remix-run/node";
 import { prisma } from "~/db/prisma.server";
 import { createUser } from "~/utils/user.server";
 
-
 interface Details {
   username: String;
   profilePicture: string;
@@ -14,14 +13,13 @@ interface Details {
   penName?: string;
   languages: string[];
   favoriteQuotes?: String[];
-};
+}
 
 export type RegisterForm = {
   email: string;
   password: string;
-  details? : Details;
+  details?: Details;
 };
-
 
 /**
  * Creates a new user if none exists with the given data.

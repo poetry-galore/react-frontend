@@ -4,7 +4,6 @@
 
 import bcrypt from "bcryptjs";
 
-
 import { RegisterForm } from "~/auth/register.server";
 import { prisma } from "~/db/prisma.server";
 
@@ -23,7 +22,7 @@ interface Details {
   penName: string;
   languages: string[];
   favoriteQuotes: string[];
-};
+}
 
 type UpdateForm = {
   email: string;
@@ -60,8 +59,8 @@ export async function createUser(user: RegisterForm): Promise<UserOut> {
         gender: "male, female or non-conforming",
         penName: "A unique one!",
         languages: ["English", "Kiswahili", "Spanish"],
-        favoriteQuotes: ["Just the first one is enough",]
-      })
+        favoriteQuotes: ["Just the first one is enough"],
+      }),
     },
   });
 
@@ -83,7 +82,7 @@ export async function updateUser(user: UpdateForm): Promise<UpdatedUser> {
     })
     .then((uSer) => uSer?.id);
   // consider using prisma.user.upsert for the documents that do not exist ???
-  
+
   const updatedUser = await prisma.user.update({
     where: { id: userId },
     data: {
@@ -92,9 +91,11 @@ export async function updateUser(user: UpdateForm): Promise<UpdatedUser> {
     },
   });
 
-  const parsedDetails: Details = JSON.parse(updatedUser.details as unknown as string)
+  const parsedDetails: Details = JSON.parse(
+    updatedUser.details as unknown as string,
+  );
   return {
     ...updatedUser,
-    details: parsedDetails
+    details: parsedDetails,
   } as UpdatedUser;
 }
