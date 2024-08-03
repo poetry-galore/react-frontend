@@ -13,15 +13,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  email     String   @unique
-  password  String
-  poems     Poem[]   @relation("Poems")
-  details   Json
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  email           String   @unique
+  password        String
+  username        String
+  penName         String
+  profilePicture  String
+  bio             String
+  DOB             DateTime
+  location        String
+  gender          String
+  languages       String[]
+  favouriteQuotes String[]
+  poems           Poem[]   @relation("Poems")
 }
 
 model Poem {

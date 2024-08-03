@@ -3,8 +3,9 @@ import { json } from "@remix-run/node";
 import { prisma } from "~/db/prisma.server";
 import { createUser } from "~/utils/user.server";
 
+
 interface Details {
-  username: String;
+  username: string;
   profilePicture: string;
   bio?: string;
   dateOfBirth: Date;
@@ -13,13 +14,14 @@ interface Details {
   penName?: string;
   languages: string[];
   favoriteQuotes?: String[];
-}
+};
 
 export type RegisterForm = {
   email: string;
   password: string;
-  details?: Details;
+  details? : Details;
 };
+
 
 /**
  * Creates a new user if none exists with the given data.
@@ -37,6 +39,13 @@ export async function register(user: RegisterForm) {
     );
   }
 
+  const existingUsername = await prisma.user.findFirst(
+    {where: {
+      details: {
+        username: user.details?.username,
+      }
+    }}
+  )
   const newUser = await createUser(user);
 
   if (!newUser) {
