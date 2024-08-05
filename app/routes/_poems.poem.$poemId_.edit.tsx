@@ -17,9 +17,11 @@ import { ThemeToggle } from "~/components/theme-toggler";
 import { Button } from "~/components/ui/button";
 
 // Database
-import { Poem } from "@prisma/client";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { getPoemWithId, PoemUpdateType, updatePoem } from "~/utils/poem.server";
+import {
+  getPoemWithIdForUserOrThrow,
+  PoemUpdateType,
+  updatePoem,
+} from "~/utils/poem.server";
 
 // Authentication
 import { authenticationRequired } from "~/auth/authenticator.server";
@@ -43,21 +45,10 @@ const POEM_ROUTE = (poemId: string) => `/poem/${poemId}`;
  * @returns The poem and user data.
  */
 export async function loader({ request, params }: LoaderFunctionArgs) {
-  const poemId = params.poemId;
-  let poem: Poem | null = null;
-
-  try {
-    if (poemId) poem = await getPoemWithId(poemId);
-  } catch (error: any) {
-    if (error instanceof PrismaClientKnownRequestError) {
-      throw new Response(null, { status: 404, statusText: "Poem not found" });
-    } else {
-      console.log(error);
-      throw new Response(null, { status: 500, statusText: "Server error" });
-    }
-  }
-
   const user = await authenticationRequired(request);
+
+  const poemId = params.poemId;
+  const poem = await getPoemWithIdForUserOrThrow(poemId ? poemId : "", user);
 
   return json({ poem, user });
 }
@@ -70,16 +61,20 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 export async function action({ request }: ActionFunctionArgs) {
   const clonedRequest = request.clone();
 
-  await authenticationRequired(clonedRequest);
+  const user = await authenticationRequired(clonedRequest);
   const formData = await request.formData();
 
-  const poemCreate: PoemUpdateType = {
+  const poemUpdate: PoemUpdateType = {
     title: formData.get("title") as string,
     content: formData.get("content") as string,
   };
 
   const poemId = formData.get("poemId") as string;
-  await updatePoem(poemId, poemCreate);
+
+  // Check if the poem with poemId exists and is authored by the current user
+  await getPoemWithIdForUserOrThrow(poemId ? poemId : "", user);
+
+  await updatePoem(poemId, poemUpdate);
 
   return redirect(POEM_ROUTE(poemId));
 }

@@ -7,9 +7,7 @@ import Markup from "~/components/markup";
 import { Button } from "~/components/ui/button";
 
 // Database
-import { Poem } from "@prisma/client";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { getPoemWithId } from "~/utils/poem.server";
+import { getPoemWithIdOrThrow } from "~/utils/poem.server";
 
 // Authentication
 import { authenticatedUser } from "~/auth/authenticator.server";
@@ -28,24 +26,8 @@ const EDIT_POEM_ROUTE = (poemId: string) => `/poem/${poemId}/edit`;
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const poemId = params.poemId;
-  let poem: Poem | null = null;
 
-  try {
-    if (poemId) poem = await getPoemWithId(poemId);
-  } catch (error: any) {
-    console.error(error);
-
-    if (error instanceof PrismaClientKnownRequestError) {
-      throw new Response(null, { status: 404, statusText: "Poem not found" });
-    } else {
-      throw error;
-    }
-  }
-
-  if (!poem) {
-    throw new Response(null, { status: 404, statusText: "Poem not found" });
-  }
-
+  const poem = await getPoemWithIdOrThrow(poemId ? poemId : "");
   const user = await authenticatedUser(request);
 
   return json({ poem, user });
@@ -84,7 +66,7 @@ export default function ShowPoem() {
                   method="post"
                   onSubmit={(event) => {
                     const response = confirm(
-                      "Please confirm you want to delete this poem.",
+                      "Please confirm you want to delete this poem."
                     );
                     if (!response) {
                       event.preventDefault();
