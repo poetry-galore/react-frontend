@@ -8,7 +8,6 @@ import { prisma } from "~/db/prisma.server";
 export type User = {
   userId: string;
   email: string;
-  
 };
 
 export const EMAIL_PASSWORD_STRATEGY = "email-password-strategy";
@@ -19,18 +18,14 @@ authenticator.use(
   new FormStrategy(async ({ form }) => {
     const email = form.get("email") as string;
     const password = form.get("password") as string;
-    
 
     const user = await prisma.user.findUnique({ where: { email: email } });
 
-    if (
-      !user ||
-      !(await bcrypt.compare(password, user.password))
-    ) {
+    if (!user || !(await bcrypt.compare(password, user.password))) {
       throw Error("What are you doing?!");
     }
 
-    return { userId: user.id, email: user.email};
+    return { userId: user.id, email: user.email };
   }),
   EMAIL_PASSWORD_STRATEGY,
 );

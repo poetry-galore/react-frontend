@@ -3,7 +3,6 @@ import { json } from "@remix-run/node";
 import { prisma } from "~/db/prisma.server";
 import { createUser } from "~/utils/user.server";
 
-
 export type RegisterForm = {
   email: string;
   password: string;
@@ -30,10 +29,10 @@ export async function register(user: RegisterForm) {
   if (exists) {
     return json(
       { error: `User already exists with that email` },
-      { status: 400 }
+      { status: 400 },
     );
   }
-  
+
   const newUser = await createUser(user);
 
   if (!newUser) {
@@ -45,7 +44,7 @@ export async function register(user: RegisterForm) {
           password: user.password,
         },
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

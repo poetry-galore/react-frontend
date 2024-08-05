@@ -12,7 +12,6 @@ type UserOut = {
   email: string;
 };
 
-
 type UpdateForm = {
   id: string;
   email: string;
@@ -52,13 +51,12 @@ type UpdatedUser = {
  */
 export async function createUser(user: RegisterForm): Promise<UserOut> {
   const passwordHash = await bcrypt.hash(user.password, 10);
-  
 
   const newUser = await prisma.user.create({
     data: {
       email: user.email,
       password: passwordHash,
-      username: 'your unique username',
+      username: "your unique username",
       profilePicture: "",
       bio: "A short description of yourself",
       DOB: new Date(),
@@ -66,7 +64,7 @@ export async function createUser(user: RegisterForm): Promise<UserOut> {
       gender: "male, female or non-conforming",
       penName: "A unique one!",
       languages: ["English", "Kiswahili", "Spanish"],
-      favouriteQuotes: ["Just the first one is enough",],
+      favouriteQuotes: ["Just the first one is enough"],
     },
   });
 
@@ -94,6 +92,5 @@ export async function updateUser(user: UpdateForm): Promise<UpdatedUser> {
     data: user,
   });
 
-  
   return updatedUser;
 }
