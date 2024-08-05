@@ -12,21 +12,20 @@ type UserOut = {
   email: string;
 };
 
-interface Details {
+
+type UpdateForm = {
+  id: string;
+  email: string;
+  password: string;
   username: string;
   profilePicture: string;
   bio: string;
-  dateOfBirth: Date;
+  DOB: Date;
   location: string;
   gender: string;
   penName: string;
   languages: string[];
-  favoriteQuotes: string[];
-}
-
-type UpdateForm = {
-  email: string;
-  details: Details;
+  favouriteQuotes: string[];
 };
 
 type UpdatedUser = {
@@ -35,7 +34,15 @@ type UpdatedUser = {
   updatedAt: Date;
   email: string;
   password: string;
-  details: Details;
+  username: string;
+  profilePicture: string;
+  bio: string;
+  DOB: Date;
+  location: string;
+  gender: string;
+  penName: string;
+  languages: string[];
+  favouriteQuotes: string[];
 };
 /**
  * Creates a new user and adds them to the database.
@@ -45,22 +52,21 @@ type UpdatedUser = {
  */
 export async function createUser(user: RegisterForm): Promise<UserOut> {
   const passwordHash = await bcrypt.hash(user.password, 10);
+  
 
   const newUser = await prisma.user.create({
     data: {
       email: user.email,
       password: passwordHash,
-      details: JSON.stringify({
-        username: "Your name ...",
-        profilePicture: "",
-        bio: "A short description of yourself",
-        dateOfBirth: new Date(),
-        location: "Your present country and nearest city",
-        gender: "male, female or non-conforming",
-        penName: "A unique one!",
-        languages: ["English", "Kiswahili", "Spanish"],
-        favoriteQuotes: ["Just the first one is enough"],
-      }),
+      username: 'your unique username',
+      profilePicture: "",
+      bio: "A short description of yourself",
+      DOB: new Date(),
+      location: "Your present country and nearest city",
+      gender: "male, female or non-conforming",
+      penName: "A unique one!",
+      languages: ["English", "Kiswahili", "Spanish"],
+      favouriteQuotes: ["Just the first one is enough",],
     },
   });
 
@@ -85,17 +91,9 @@ export async function updateUser(user: UpdateForm): Promise<UpdatedUser> {
 
   const updatedUser = await prisma.user.update({
     where: { id: userId },
-    data: {
-      email: user.email,
-      details: JSON.stringify(user.details),
-    },
+    data: user,
   });
 
-  const parsedDetails: Details = JSON.parse(
-    updatedUser.details as unknown as string,
-  );
-  return {
-    ...updatedUser,
-    details: parsedDetails,
-  } as UpdatedUser;
+  
+  return updatedUser;
 }

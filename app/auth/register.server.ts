@@ -4,24 +4,19 @@ import { prisma } from "~/db/prisma.server";
 import { createUser } from "~/utils/user.server";
 
 
-interface Details {
-  username: string;
-  profilePicture: string;
-  bio?: string;
-  dateOfBirth: Date;
-  location?: string;
-  gender: "male" | "female" | "non-binary" | "other";
-  penName?: string;
-  languages: string[];
-  favoriteQuotes?: String[];
-};
-
 export type RegisterForm = {
   email: string;
   password: string;
-  details? : Details;
+  username: string;
+  profilePicture: string;
+  bio: string;
+  DOB: Date;
+  location: string;
+  gender: string;
+  penName: string;
+  languages: string[];
+  favouriteQuotes: string[];
 };
-
 
 /**
  * Creates a new user if none exists with the given data.
@@ -35,17 +30,10 @@ export async function register(user: RegisterForm) {
   if (exists) {
     return json(
       { error: `User already exists with that email` },
-      { status: 400 },
+      { status: 400 }
     );
   }
-
-  const existingUsername = await prisma.user.findFirst(
-    {where: {
-      details: {
-        username: user.details?.username,
-      }
-    }}
-  )
+  
   const newUser = await createUser(user);
 
   if (!newUser) {
@@ -57,7 +45,7 @@ export async function register(user: RegisterForm) {
           password: user.password,
         },
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

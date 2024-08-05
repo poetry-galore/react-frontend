@@ -15,4 +15,7 @@ export default defineConfig({
     netlifyPlugin(),
     tsconfigPaths(),
   ],
+  build: {
+    sourcemap: true,
+  },
 });
