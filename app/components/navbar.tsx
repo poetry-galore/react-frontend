@@ -36,7 +36,6 @@ export default function Navbar({
   loggedUser,
   showCreatePoem = true,
 }: NavbarProps) {
-
   return (
     <div className="lg:w-2/3 mx-auto my-5 flex justify-between  bg-white h-20 dark:bg-dark">
       <div className="flex items-center ms-1 sm:ms-2 md:ms-4 lg:ms-0">

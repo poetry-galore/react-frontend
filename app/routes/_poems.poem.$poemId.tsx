@@ -66,7 +66,7 @@ export default function ShowPoem() {
                   method="post"
                   onSubmit={(event) => {
                     const response = confirm(
-                      "Please confirm you want to delete this poem."
+                      "Please confirm you want to delete this poem.",
                     );
                     if (!response) {
                       event.preventDefault();
