@@ -1,4 +1,4 @@
-import { Form, Link, useLocation } from "@remix-run/react";
+import { Form, Link } from "@remix-run/react";
 
 // Components
 import { LogInIcon, LogOutIcon } from "lucide-react";
@@ -20,14 +20,22 @@ type NavbarProps = {
    * Current logged user
    */
   loggedUser?: User | null;
+
+  /**
+   * Whether to show the create poem button
+   *
+   * @default true
+   */
+  showCreatePoem?: boolean;
 };
 
 /**
  * Navigation bar
  */
-export default function Navbar({ loggedUser }: NavbarProps) {
-  const location = useLocation();
-
+export default function Navbar({
+  loggedUser,
+  showCreatePoem = true,
+}: NavbarProps) {
   return (
     <div className="lg:w-2/3 mx-auto my-5 flex justify-between  bg-white h-20 dark:bg-dark">
       <div className="flex items-center ms-1 sm:ms-2 md:ms-4 lg:ms-0">
@@ -42,7 +50,7 @@ export default function Navbar({ loggedUser }: NavbarProps) {
         <ThemeToggle className="me-1 lg:me-4" />
 
         {/** Create new poem button */}
-        {loggedUser && location.pathname !== NEW_POEM_ROUTE && (
+        {loggedUser && showCreatePoem && (
           <Link to={NEW_POEM_ROUTE}>
             <Button
               size={"default"}
@@ -67,7 +75,7 @@ export default function Navbar({ loggedUser }: NavbarProps) {
             </Button>
           </Form>
         ) : (
-          <Link to="login" className="group/login">
+          <Link to="/login" className="group/login">
             <Button
               size={"default"}
               className="text-lg font-semibold border-none text-sky-500 bg-white hover:bg-white hover:text-primary rounded-lg dark:text-primary dark:bg-inherit hover:dark:bg-inherit hover:dark:text-sky-500"
