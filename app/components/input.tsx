@@ -25,7 +25,7 @@ export function AuthInput({ name, label, ...rest }: InputProps) {
       </label>
 
       <Input
-        className="text-gray-900 text-sm rounded-lg block w-full focus-visible:ring-2 dark:bg-dark dark:placeholder-gray-400 dark:text-white"
+        className="text-gray-900 text-sm rounded-lg block w-full transition-none focus-visible:ring-2 dark:bg-dark dark:placeholder-gray-400 dark:text-white"
         {...getInputProps({ id: name })}
         {...rest}
         autoComplete="false"

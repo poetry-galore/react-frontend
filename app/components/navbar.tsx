@@ -54,7 +54,7 @@ export default function Navbar({
           <Link to={NEW_POEM_ROUTE}>
             <Button
               size={"default"}
-              className="px-2 me-3 text-base font-semibold hover:text-primary dark:hover:text-primary"
+              className="px-2 me-3 text-base font-semibold transition-none hover:text-primary dark:hover:text-primary"
               variant={"secondary"}
             >
               Create New
@@ -66,11 +66,11 @@ export default function Navbar({
           <Form method="post" action="/logout" className="group/logout">
             <Button
               size={"default"}
-              className="text-lg font-semibold border-none text-red-500 bg-white hover:bg-white hover:text-red-400 rounded-lg dark:text-red-500 dark:bg-inherit hover:dark:bg-inherit hover:dark:text-red-400"
-              variant={"default"}
+              className="text-lg font-semibold border-none text-red-500 bg-inherit hover:bg-inherit hover:text-red-400 rounded-lg dark:text-red-500 dark:bg-inherit hover:dark:bg-inherit hover:dark:text-red-400"
+              variant={"secondary"}
               type="submit"
             >
-              Logout{" "}
+              Logout
               <LogOutIcon className="ms-1 w-4 h-4 group-hover/logout:translate-x-1.5 group-hover/logout:scale-110 duration-300 motion-reduce:scale-0 motion-reduce:translate-x-0" />
             </Button>
           </Form>
@@ -78,8 +78,8 @@ export default function Navbar({
           <Link to="/login" className="group/login">
             <Button
               size={"default"}
-              className="text-lg font-semibold border-none text-sky-500 bg-white hover:bg-white hover:text-primary rounded-lg dark:text-primary dark:bg-inherit hover:dark:bg-inherit hover:dark:text-sky-500"
-              variant={"default"}
+              className="text-lg font-semibold border-none text-sky-500 bg-inherit hover:bg-inherit hover:text-primary rounded-lg dark:text-primary dark:bg-inherit hover:dark:bg-inherit hover:dark:text-sky-500"
+              variant={"secondary"}
             >
               Login{" "}
               <LogInIcon className="ms-1 w-4 h-4 group-hover/login:translate-x-1.5 group-hover/login:scale-110 duration-300 motion-reduce:scale-0 motion-reduce:translate-x-0" />
