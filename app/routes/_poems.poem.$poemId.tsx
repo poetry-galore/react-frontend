@@ -6,6 +6,7 @@ import Navbar from "~/components/navbar";
 import Markup from "~/components/markup";
 import { Button } from "~/components/ui/button";
 import { PoemCard } from "~/components/card";
+import { DeleteIcon, Edit3Icon } from "lucide-react";
 
 // Database
 import { getPoemAndAuthorOrThrow } from "~/utils/poem.server";
@@ -40,53 +41,54 @@ export default function ShowPoem() {
   return (
     <>
       <Navbar loggedUser={user} showCreatePoem={false} />
-      {/* <Markup content={poem?.content} /> */}
-      <div className="flex gap-6 justify-center items-center">
+      <div className="flex gap-6 justify-center">
         <PoemCard
           className="outfit"
           // @ts-expect-error
           poem={poem}
         >
           <Markup content={poem?.content} />
-          {/** Show action buttons if user is logged in and is the author */}
-          {user && user.userId === poem.authorId && (
-            <>
-              {/** Edit Button */}
-              <Link to={EDIT_POEM_ROUTE(poem.id)}>
-                <Button
-                  size={"sm"}
-                  className="my-4 me-3 text-base font-semibold hover:text-primary dark:hover:text-primary"
-                  variant={"secondary"}
-                >
-                  Edit
-                </Button>
-              </Link>
-
-              {/** Delete */}
-              <Form
-                action="delete"
-                method="post"
-                onSubmit={(event) => {
-                  const response = confirm(
-                    "Please confirm you want to delete this poem.",
-                  );
-                  if (!response) {
-                    event.preventDefault();
-                  }
-                }}
-              >
-                <Button
-                  size={"sm"}
-                  className="my-4 me-3 text-base font-semibold hover:text-primary dark:hover:text-primary"
-                  variant={"ghost"}
-                  type="submit"
-                >
-                  Delete
-                </Button>
-              </Form>
-            </>
-          )}
         </PoemCard>
+        {/** Show action buttons if user is logged in and is the author */}
+        {user && user.userId === poem.authorId && (
+          <div className="flex items-start">
+            {/** Edit Button */}
+            <Link to={EDIT_POEM_ROUTE(poem.id)}>
+              <Button
+                size={"sm"}
+                className="my-4 me-3 text-base font-semibold hover:text-primary dark:hover:text-primary"
+                variant={"link"}
+              >
+                <Edit3Icon className="h-4 w-4 me-1" />
+                Edit
+              </Button>
+            </Link>
+
+            {/** Delete */}
+            <Form
+              action="delete"
+              method="post"
+              onSubmit={(event) => {
+                const response = confirm(
+                  "Please confirm you want to delete this poem.",
+                );
+                if (!response) {
+                  event.preventDefault();
+                }
+              }}
+            >
+              <Button
+                size={"sm"}
+                className="my-4 me-3 text-base font-semibold hover:text-red-600 dark:hover:text-red-600"
+                variant={"link"}
+                type="submit"
+              >
+                <DeleteIcon className="h-4 w-4 me-1 mb-1" />
+                Delete
+              </Button>
+            </Form>
+          </div>
+        )}
       </div>
     </>
   );
