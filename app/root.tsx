@@ -15,7 +15,8 @@ import {
 } from "@remix-run/react";
 
 // CSS
-import "~/tailwind.css";
+import "~/styles/tailwind.css";
+import styles from "~/styles/font.css?url";
 
 // Authentication
 import { authenticator } from "~/auth/authenticator.server";
@@ -23,7 +24,10 @@ import { authenticator } from "~/auth/authenticator.server";
 // Theme
 import { themeSessionResolver } from "~/theme/session.server";
 
-export const links: LinksFunction = () => [{ rel: "icon", href: "/icon.svg" }];
+export const links: LinksFunction = () => [
+  { rel: "icon", href: "/icon.svg" },
+  { rel: "stylesheet", href: styles },
+];
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const clonedRequest = request.clone();
@@ -50,7 +54,7 @@ export function App() {
         <PreventFlashOnWrongTheme ssrTheme={Boolean(data.theme)} />
         <Links />
       </head>
-      <body className="text-slate-800 bg-white dark:text-slate-100 dark:bg-dark h-dvh">
+      <body className="text-slate-900 bg-white dark:text-slate-100 dark:bg-dark h-dvh josefin antialiased">
         <Outlet />
         <ScrollRestoration />
         <Scripts />
