@@ -1,0 +1,45 @@
+@font-face {
+  font-family: "Outfit";
+  src: url("/fonts/Outfit-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-stretch: 25% 150%;
+}
+
+@font-face {
+  font-family: "Josefin Sans";
+  src: url("/fonts/JosefinSans-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-stretch: 25% 150%;
+}
+
+@font-face {
+  font-family: "Crimson Pro";
+  src: url("/fonts/CrimsonPro-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+}
+
+@font-face {
+  font-family: "Raleway";
+  src: url("/fonts/Raleway-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+}
+
+.outfit {
+  font-family: "Outfit";
+  font-weight: 400;
+}
+
+.josefin {
+  font-family: "Josefin Sans";
+  /* font-weight: 400; */
+}
+
+.crimson {
+  font-family: "Crimson Pro";
+  font-weight: normal;
+}
+
+.raleway {
+  font-family: "Raleway";
+  font-weight: normal;
+}

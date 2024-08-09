@@ -3,9 +3,14 @@ import { useLoaderData } from "@remix-run/react";
 
 // Components
 import Navbar from "~/components/navbar";
+import { PoemCard } from "~/components/card";
+import Markup from "~/components/markup";
 
 // Authentication
 import { authenticator } from "~/auth/authenticator.server";
+
+// Database
+import { getPoemsAndAuthors } from "~/utils/poem.server";
 
 export const meta: MetaFunction = () => {
   return [
@@ -20,18 +25,31 @@ export async function loader({ request }: LoaderFunctionArgs) {
   // Get authenticated user if there is one
   const user = await authenticator.isAuthenticated(clonedRequest);
 
+  const poems = await getPoemsAndAuthors(10);
+
   return json({
     user,
+    poems,
   });
 }
 
 export default function Index() {
-  const { user } = useLoaderData<typeof loader>();
+  const { user, poems } = useLoaderData<typeof loader>();
 
   return (
     <>
       <Navbar loggedUser={user} />
-      <h1 className="text-3xl">Poetry Galore</h1>
+      <div className="flex flex-col items-center justify-center">
+        {poems.map((poem) => (
+          <PoemCard
+            key={poem.id}
+            // @ts-expect-error
+            poem={poem}
+          >
+            <Markup content={poem.content} />
+          </PoemCard>
+        ))}
+      </div>
     </>
   );
 }
