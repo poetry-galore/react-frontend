@@ -78,9 +78,7 @@ export function PoemCard({ poem, children, className }: PoemCardProps) {
           </CardTitle>
 
           <CardDescription className="ms-2 flex justify-start items-center raleway italic text-slate-400 dark:text-slate-600">
-            <div className="me-1 ">
-              <FeatherIcon className="h-4 w-4" />
-            </div>{" "}
+            <FeatherIcon className="h-4 w-4 me-1" />
             <Link
               to="#"
               className="italic text-base font-semibold hover:text-slate-700 hover:underline hover:underline-offset-2 dark:hover:text-slate-400"
