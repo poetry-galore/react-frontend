@@ -34,6 +34,7 @@ export type PoemWithAuthor = Poem & {
   author: {
     id?: string;
     email?: string;
+    penName?: string;
   };
 };
 

@@ -19,6 +19,10 @@ model User {
   updatedAt DateTime @updatedAt
   email     String   @unique
   password  String
+  penName   String?
+  bio       String?
+  location  String?
+  languages String?
   poems     Poem[]   @relation("Poems")
 }
 

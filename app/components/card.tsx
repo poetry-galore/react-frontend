@@ -85,7 +85,7 @@ export function PoemCard({ poem, children, className }: PoemCardProps) {
               className="italic text-base font-semibold hover:text-slate-700 hover:underline hover:underline-offset-2 dark:hover:text-slate-400"
             >
               {/* TODO: Use username or pen name here */}
-              {poem.author.email}
+              {poem.author.penName ? poem.author.penName : poem.author.email}
             </Link>
           </CardDescription>
         </CardHeader>

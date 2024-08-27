@@ -76,7 +76,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   // TODO: New users are to be redirected to onboarding
   return await authenticator.authenticate(EMAIL_PASSWORD_STRATEGY, request, {
-    successRedirect: "/",
+    successRedirect: "/profile",
     context: { formData },
   });
 };
