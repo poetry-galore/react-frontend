@@ -12,13 +12,13 @@ type UserOut = {
   email: string;
 };
 
-export type  UpdateForm = {
+export type UpdateForm = {
   email: string;
   penName: string;
   bio: string;
   location: string;
   languages: string;
-}
+};
 
 export type userUpdate = {
   email: string;
@@ -26,7 +26,7 @@ export type userUpdate = {
   bio: string;
   location: string;
   languages: string;
-}
+};
 
 /**
  * Creates a new user and adds them to the database.
@@ -47,26 +47,26 @@ export async function createUser(user: RegisterForm): Promise<UserOut> {
   return { id: newUser.id, email: newUser.email };
 }
 
-
-export async function updateUser(userNew : UpdateForm): Promise<userUpdate> {
-  
+export async function updateUser(userNew: UpdateForm): Promise<userUpdate> {
   const updatedUser = await prisma.user.update({
-    where : {
-      email: userNew.email
-    }, 
-    data : {
+    where: {
+      email: userNew.email,
+    },
+    data: {
       penName: userNew.penName,
       location: userNew.location,
       bio: userNew.bio,
       languages: userNew.languages,
-    }
-  })
+    },
+  });
 
   return {
     email: updatedUser.email,
-    penName: updatedUser.penName ? updatedUser.penName : 'pick a name',
-    bio: updatedUser.bio ? updatedUser.bio : 'update your bio',
-    location: updatedUser.location ? updatedUser.location : 'where do you live?',
-    languages: updatedUser.languages ? updatedUser.languages : 'Add languages',
-  }
+    penName: updatedUser.penName ? updatedUser.penName : "pick a name",
+    bio: updatedUser.bio ? updatedUser.bio : "update your bio",
+    location: updatedUser.location
+      ? updatedUser.location
+      : "where do you live?",
+    languages: updatedUser.languages ? updatedUser.languages : "Add languages",
+  };
 }
