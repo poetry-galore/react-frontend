@@ -4,7 +4,6 @@
 
 import bcrypt from "bcryptjs";
 
-
 import { RegisterForm } from "~/auth/register.server";
 import { prisma } from "~/db/prisma.server";
 
@@ -45,9 +44,10 @@ export async function createUser(user: RegisterForm): Promise<UserOut> {
   return { id: newUser.id, email: newUser.email };
 }
 
-export async function updateUser(userNew: UpdateForm, userId: string): Promise<userUpdate> {
-
-
+export async function updateUser(
+  userNew: UpdateForm,
+  userId: string,
+): Promise<userUpdate> {
   const updatedUser = await prisma.user.update({
     where: {
       id: userId,
@@ -64,6 +64,5 @@ export async function updateUser(userNew: UpdateForm, userId: string): Promise<u
     profilePicture: updatedUser.profileP,
     penName: updatedUser.penName ? updatedUser.penName : "pick a name",
     bio: updatedUser.bio ? updatedUser.bio : "update your bio",
-    
   };
 }
