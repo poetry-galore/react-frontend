@@ -5,7 +5,7 @@ import {
   redirect,
 } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { authenticator } from "~/auth/authenticator.server";
+import { authenticationRequired, authenticator } from "~/auth/authenticator.server";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod";
@@ -27,13 +27,13 @@ import {
 import { formSchema } from "~/profile/ProfileSchema";
 import { updateUser, userUpdate, UpdateForm } from "~/utils/user.server";
 import { Textarea } from "~/components/ui/textarea";
+import { uploadPhoto } from "~/profile/supaBaseClient";
 
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const clonedRequest = request.clone();
 
-  // Get authenticated user if there is one
-  const user = await authenticator.isAuthenticated(clonedRequest);
+  const user = await authenticationRequired(clonedRequest);
 
   return json({
     user,
@@ -43,37 +43,45 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export async function action({ request }: ActionFunctionArgs) {
   const clonedRequest = request.clone();
 
-  const user = authenticator.isAuthenticated(clonedRequest);
+  const user = await authenticationRequired(clonedRequest);
   console.log(user);
   const formData = await request.formData();
 
-  const userDetails: UpdateForm = {
-    profilePicture: formData.get("profilePicture") as string,
+  
+type finalForm = {
+  profilePicture: File;
+  penName: string;
+  bio: string;
+}
+const userDetails: finalForm = {
+    profilePicture: formData.get("profilePicture") as File,
     penName: formData.get("penName") as string,
     bio: formData.get("bio") as string,
-    location: formData.get("location") as string,
-    languages: formData.get("languages") as string,
   };
 
-  const updatedUser = await updateUser(userDetails);
+  const photoPath = await uploadPhoto(userDetails.profilePicture).then((obj) => obj.fullPath).catch((_err) => _err.error);
+  const updatedUser = await updateUser({ ...userDetails, profilePicture: photoPath}, user.userId);
 
   return redirect("/");
 }
 
 export default function Profile() {
-  const user = useLoaderData<typeof loader>;
+  const user = useLoaderData<typeof loader>();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues:
+    defaultValues: {
+      profilePicture: "",
+      penName: "",
+      bio: ""
+    }
   })
   return (
     <>
-      <Navbar loggedUser={user} />
-      <div>
+      <div className=" ">
         <Form {...form}>        
         <form
           method="post"
-          className="space-y-6 ">
+          className="space-y-8 justify-center w-4/5">
           
           <FormField 
           control={form.control}
@@ -82,10 +90,10 @@ export default function Profile() {
             <FormItem>
               <FormLabel>Profile Picture</FormLabel>
               <FormControl>
-                <Input placeholder="profile picture"{...field}/>
+                <Input type="file" placeholder="profile picture"{...field}/>
               </FormControl>
               <FormDescription>
-                This is your profile picture publicly displayed to other people
+                Upload a picture you want to use for your profile picture
               </FormDescription>
               <FormMessage/>
             </FormItem>
@@ -97,10 +105,10 @@ export default function Profile() {
             <FormItem>
               <FormLabel>Pen name</FormLabel>
               <FormControl>
-                <Input placeholder="pen name"{...field}/>
+                <Input placeholder=""{...field}/>
               </FormControl>
               <FormDescription>
-                This is your pen name. publicly displayed to other people
+                Choose a unique pen name!
               </FormDescription>
               <FormMessage/>
             </FormItem>
@@ -112,30 +120,15 @@ export default function Profile() {
             <FormItem>
               <FormLabel>Bio</FormLabel>
               <FormControl>
-                <Textarea placeholder="Type what you want people to know about you here" {...field}/>
+                <Textarea placeholder=". . ." {...field}/>
               </FormControl>
               <FormDescription>
-                This is your bio. I t describes who you are to other users.
+                What do you want other users to know about you?
               </FormDescription>
               <FormMessage/>
             </FormItem>
           )}/>
-          <FormField 
-          control={form.control}
-          name="location"
-          render={({field}) => (
-            <FormItem>
-              <FormLabel>Location</FormLabel>
-              <FormControl>
-                <Input placeholder="Where you are located" {...field}/>
-              </FormControl>
-              <FormDescription>
-                This is your local area
-              </FormDescription>
-              <FormMessage/>
-            </FormItem>
-          )}/>
-          
+          <Button>Submit</Button>
 
         </form>
         </Form>

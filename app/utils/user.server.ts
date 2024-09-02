@@ -4,6 +4,7 @@
 
 import bcrypt from "bcryptjs";
 
+
 import { RegisterForm } from "~/auth/register.server";
 import { prisma } from "~/db/prisma.server";
 
@@ -13,19 +14,16 @@ type UserOut = {
 };
 
 export type UpdateForm = {
-  email: string;
+  profilePicture: string;
   penName: string;
   bio: string;
-  location: string;
-  languages: string;
 };
 
 export type userUpdate = {
   email: string;
-  penName: string;
-  bio: string;
-  location: string;
-  languages: string;
+  profilePicture: string | null;
+  penName: string | null;
+  bio: string | null;
 };
 
 /**
@@ -47,26 +45,25 @@ export async function createUser(user: RegisterForm): Promise<UserOut> {
   return { id: newUser.id, email: newUser.email };
 }
 
-export async function updateUser(userNew: UpdateForm): Promise<userUpdate> {
+export async function updateUser(userNew: UpdateForm, userId: string): Promise<userUpdate> {
+
+
   const updatedUser = await prisma.user.update({
     where: {
-      email: userNew.email,
+      id: userId,
     },
     data: {
+      profileP: userNew.profilePicture,
       penName: userNew.penName,
-      location: userNew.location,
       bio: userNew.bio,
-      languages: userNew.languages,
     },
   });
 
   return {
     email: updatedUser.email,
+    profilePicture: updatedUser.profileP,
     penName: updatedUser.penName ? updatedUser.penName : "pick a name",
     bio: updatedUser.bio ? updatedUser.bio : "update your bio",
-    location: updatedUser.location
-      ? updatedUser.location
-      : "where do you live?",
-    languages: updatedUser.languages ? updatedUser.languages : "Add languages",
+    
   };
 }
