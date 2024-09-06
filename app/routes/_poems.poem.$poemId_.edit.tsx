@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
+import { RichTextEditor } from "@poetry-galore/rich-text-editor";
+import { CustomEditorState } from "@poetry-galore/types";
 import {
   ActionFunctionArgs,
-  LoaderFunctionArgs,
   json,
+  LoaderFunctionArgs,
   redirect,
 } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
+import { useEffect, useState } from "react";
 import { ClientOnly } from "remix-utils/client-only";
-import { CustomEditorState } from "@poetry-galore/types";
-import RichTextEditor from "@poetry-galore/rich-text-editor";
 
 // Components
 import { UserAvatar } from "~/components/avatar";

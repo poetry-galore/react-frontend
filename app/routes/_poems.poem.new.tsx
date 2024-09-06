@@ -1,4 +1,4 @@
-import RichTextEditor from "@poetry-galore/rich-text-editor";
+import { RichTextEditor } from "@poetry-galore/rich-text-editor";
 import type { CustomEditorState } from "@poetry-galore/types";
 import {
   ActionFunctionArgs,
@@ -10,10 +10,10 @@ import { Form, Link, useLoaderData } from "@remix-run/react";
 import { useEffect, useState } from "react";
 
 // Components
-import { LogoIcon } from "~/components/logo";
-import { Button } from "~/components/ui/button";
-import { ThemeToggle } from "~/components/theme-toggler";
 import { UserAvatar } from "~/components/avatar";
+import { LogoIcon } from "~/components/logo";
+import { ThemeToggle } from "~/components/theme-toggler";
+import { Button } from "~/components/ui/button";
 
 // Authentication
 import { authenticationRequired } from "~/auth/authenticator.server";
