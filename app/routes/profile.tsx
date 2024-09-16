@@ -31,6 +31,7 @@ import { formSchema } from "~/profile/ProfileSchema";
 import { updateUser, userUpdate, UpdateForm } from "~/utils/user.server";
 import { Textarea } from "~/components/ui/textarea";
 import { uploadPhoto } from "~/profile/supaBaseClient";
+import React, { useState } from "react";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const clonedRequest = request.clone();
@@ -81,11 +82,26 @@ export default function Profile() {
       bio: "",
     },
   });
+
+  const [preview, setPreview] = useState<string | null>(null);
+
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
   return (
     <>
-      <div className=" ">
+      <div className="flex flex-col items-center justify-center ">
         <Form {...form}>
-          <form method="post" className="space-y-8 justify-center w-4/5">
+          <form method="post" encType="multipart/form-data" className="space-y-8 justify-center ">
+          {preview ? <img src={preview} alt="Image preview"/> :
             <FormField
               control={form.control}
               name="profilePicture"
@@ -96,8 +112,9 @@ export default function Profile() {
                     <Input
                       type="file"
                       placeholder="profile picture"
+                      accept="image/*"
                       {...field}
-                    />
+                    onChange={handleImageChange}/>
                   </FormControl>
                   <FormDescription>
                     Upload a picture you want to use for your profile picture
@@ -106,6 +123,7 @@ export default function Profile() {
                 </FormItem>
               )}
             />
+            }
             <FormField
               control={form.control}
               name="penName"

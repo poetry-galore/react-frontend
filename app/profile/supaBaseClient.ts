@@ -7,7 +7,7 @@ const anonKey = process.env.SUPABASE_ANON_KEY!;
 export const supabase = createClient(supabaseUrl, anonKey);
 
 export async function uploadPhoto(photo: File) {
-  if (typeof photo === "object" && photo) {
+  if (typeof photo === "object" && photo.type.startsWith("image/")) {
     const fileExt = photo.type.split("/")[1];
     const fileName = `${v4()}.${fileExt}`;
     const filePath = `${fileName}`;
