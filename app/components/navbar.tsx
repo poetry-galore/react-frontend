@@ -64,7 +64,7 @@ export default function Navbar({
         )}
 
         {loggedUser ? (
-          <ProfileSheet/>
+          <ProfileSheet />
         ) : (
           <Link to="/login" className="group/login">
             <Button

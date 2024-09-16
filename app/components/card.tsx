@@ -106,27 +106,21 @@ export function PoemCard({ poem, children, className }: PoemCardProps) {
 
 type ProfileCardProps = {
   name: string;
-} &  React.AllHTMLAttributes<HTMLDivElement>;
+} & React.AllHTMLAttributes<HTMLDivElement>;
 
-export function ProfileCard({children, className}: ProfileCardProps) {
-
+export function ProfileCard({ children, className }: ProfileCardProps) {
   return (
     <Card
-    className={cn(
-      "w-11/12 md:w-[750px] mb-10 p-3 md:p-5 rounded-xl border-none overflow-auto shadow shadow-slate-500 hover:bg-slate-200/90 dark:bg-dark dark:hover:bg-slate-800/50 dark:shadow-slate-700",
-      className,
-    )}>
+      className={cn(
+        "w-11/12 md:w-[750px] mb-10 p-3 md:p-5 rounded-xl border-none overflow-auto shadow shadow-slate-500 hover:bg-slate-200/90 dark:bg-dark dark:hover:bg-slate-800/50 dark:shadow-slate-700",
+        className,
+      )}
+    >
       <CardHeader>
-        <CardTitle>
-          Complete your user profile
-        </CardTitle>
+        <CardTitle>Complete your user profile</CardTitle>
       </CardHeader>
-      <CardContent>
-        {children}
-      </CardContent>
-      <CardFooter>
-        This is the card footer
-      </CardFooter>
+      <CardContent>{children}</CardContent>
+      <CardFooter>This is the card footer</CardFooter>
     </Card>
-  )
+  );
 }

@@ -85,7 +85,6 @@ export default function Profile() {
 
   const [preview, setPreview] = useState<string | null>(null);
 
-
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -95,35 +94,42 @@ export default function Profile() {
       };
       reader.readAsDataURL(file);
     }
-  }
+  };
   return (
     <>
       <div className="flex flex-col items-center justify-center ">
         <Form {...form}>
-          <form method="post" encType="multipart/form-data" className="space-y-8 justify-center ">
-          {preview ? <img src={preview} alt="Image preview"/> :
-            <FormField
-              control={form.control}
-              name="profilePicture"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Profile Picture</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="file"
-                      placeholder="profile picture"
-                      accept="image/*"
-                      {...field}
-                    onChange={handleImageChange}/>
-                  </FormControl>
-                  <FormDescription>
-                    Upload a picture you want to use for your profile picture
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            }
+          <form
+            method="post"
+            encType="multipart/form-data"
+            className="space-y-8 justify-center "
+          >
+            {preview ? (
+              <img src={preview} alt="Image preview" />
+            ) : (
+              <FormField
+                control={form.control}
+                name="profilePicture"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Profile Picture</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="file"
+                        placeholder="profile picture"
+                        accept="image/*"
+                        {...field}
+                        onChange={handleImageChange}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Upload a picture you want to use for your profile picture
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               control={form.control}
               name="penName"

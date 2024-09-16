@@ -38,11 +38,10 @@ export function AuthInput({ name, label, ...rest }: InputProps) {
   );
 }
 
-
-export function ProfileInput({name, label, ...rest}: InputProps) {
-  const {error, getInputProps } =useField(name);
+export function ProfileInput({ name, label, ...rest }: InputProps) {
+  const { error, getInputProps } = useField(name);
   const className = rest.className;
-  
+
   delete rest.className;
 
   return (
@@ -60,7 +59,6 @@ export function ProfileInput({name, label, ...rest}: InputProps) {
       {error && (
         <p className="text-sm text-red-600 dark:text-red-500">{error}</p>
       )}
-
     </div>
-  )
+  );
 }
