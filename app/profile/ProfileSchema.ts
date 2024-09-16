@@ -17,5 +17,5 @@ export const formSchema = z.object({
     .max(10),
   bio: z.string().min(8, {
     message: "must be atleast two words",
-  })
+  }),
 });
