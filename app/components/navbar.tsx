@@ -5,6 +5,7 @@ import { LogInIcon, LogOutIcon } from "lucide-react";
 import { ThemeToggle } from "~/components/theme-toggler";
 import { Button } from "~/components/ui/button";
 import { NavbarLogo } from "~/components/logo";
+import { ProfileSheet } from "./sheet";
 
 // Authentication
 import type { User } from "~/auth/authenticator.server";
@@ -63,17 +64,7 @@ export default function Navbar({
         )}
 
         {loggedUser ? (
-          <Form method="post" action="/logout" className="group/logout">
-            <Button
-              size={"default"}
-              className="text-lg font-semibold border-none text-red-500 bg-inherit hover:bg-inherit hover:text-red-400 rounded-lg dark:text-red-500 dark:bg-inherit hover:dark:bg-inherit hover:dark:text-red-400"
-              variant={"secondary"}
-              type="submit"
-            >
-              Logout
-              <LogOutIcon className="ms-1 w-4 h-4 group-hover/logout:translate-x-1.5 group-hover/logout:scale-110 duration-300 motion-reduce:scale-0 motion-reduce:translate-x-0" />
-            </Button>
-          </Form>
+          <ProfileSheet/>
         ) : (
           <Link to="/login" className="group/login">
             <Button

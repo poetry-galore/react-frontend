@@ -21,6 +21,7 @@ export async function uploadPhoto(photo: File) {
     if (error) {
       return { error: error.message, fullPath: null };
     }
+    console.log(data);
     return data;
   }
   return { error: "invalid file" };
