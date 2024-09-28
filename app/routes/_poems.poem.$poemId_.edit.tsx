@@ -128,9 +128,11 @@ export default function EditPoem() {
       <div className="text-center text-2xl font-bold pt-5">Edit</div>
       <div className="relative flex items-start pt-5">
         <div className="w-1/12 lg:w-1/4 sticky top-10">
-          <Link to="/">
-            <LogoIcon className="max-w-20" />
-          </Link>
+          <div className="max-w-20">
+            <Link to="/">
+              <LogoIcon className="max-w-20" />
+            </Link>
+          </div>
 
           <ThemeToggle className="ms-2.5 mt-5" />
         </div>

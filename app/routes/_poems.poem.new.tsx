@@ -109,9 +109,11 @@ export default function NewPoem() {
     <>
       <div className="relative flex items-start pt-10">
         <div className="w-1/12 lg:w-1/4 sticky top-10">
-          <Link to="/">
-            <LogoIcon className="max-w-20" />
-          </Link>
+          <div className="max-w-20">
+            <Link to="/">
+              <LogoIcon className="max-w-20" />
+            </Link>
+          </div>
 
           <ThemeToggle className="ms-2.5 mt-5" />
         </div>
