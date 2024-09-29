@@ -4,7 +4,7 @@ import {
   ActionFunctionArgs,
   json,
   LoaderFunctionArgs,
-  redirect,
+  replace,
 } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
 import { useEffect, useState } from "react";
@@ -76,7 +76,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
   await updatePoem(poemId, poemUpdate);
 
-  return redirect(POEM_ROUTE(poemId));
+  return replace(POEM_ROUTE(poemId));
 }
 
 export default function EditPoem() {
