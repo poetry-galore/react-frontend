@@ -31,26 +31,25 @@ export async function loader({ request }: LoaderFunctionArgs) {
   if (!user) {
     return json({
       user,
-      poems
-    })
+      poems,
+    });
   }
 
-  
-  const userDetails = await getUserDetails(user.userId)
+  const userDetails = await getUserDetails(user.userId);
 
   return json({
     user,
     poems,
-    userDetails
+    userDetails,
   });
 }
 
 export default function Index() {
-  const { user, poems , userDetails} = useLoaderData<typeof loader>();
+  const { user, poems, userDetails } = useLoaderData<typeof loader>();
 
   return (
     <>
-      <Navbar loggedUser={user}  userdetails={userDetails}/>
+      <Navbar loggedUser={user} userdetails={userDetails} />
       <div className="flex flex-col items-center justify-center">
         {poems.map((poem) => (
           <PoemCard

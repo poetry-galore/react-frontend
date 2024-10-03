@@ -32,7 +32,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   const poem = await getPoemAndAuthorOrThrow(poemId ? poemId : "");
   const user = await authenticatedUser(request);
-  const userDetails = await getUserDetails(user.userId)
+  const userDetails = await getUserDetails(user.userId);
 
   return json({ poem, user, userDetails });
 }
@@ -42,7 +42,11 @@ export default function ShowPoem() {
 
   return (
     <>
-      <Navbar loggedUser={user} showCreatePoem={false} userdetails={userDetails} />
+      <Navbar
+        loggedUser={user}
+        showCreatePoem={false}
+        userdetails={userDetails}
+      />
       <div className="flex gap-6 justify-center">
         <PoemCard
           className="outfit"

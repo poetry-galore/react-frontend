@@ -10,17 +10,15 @@ import {
   SheetHeader,
   SheetTrigger,
 } from "./ui/sheet";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 
 import { Form, Link } from "@remix-run/react";
 import { LogOutIcon } from "lucide-react";
 
-
 type profileSheetProps = {
-  user: User,
-  userdetails: finalForm
-
-}
+  user: User;
+  userdetails: finalForm;
+};
 export function ProfileSheet({ user, userdetails }: profileSheetProps) {
   return (
     <Sheet>
@@ -29,7 +27,6 @@ export function ProfileSheet({ user, userdetails }: profileSheetProps) {
           <AvatarImage src="https://github.com/shadcn.png" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
-
       </SheetTrigger>
 
       <SheetContent>
@@ -41,7 +38,6 @@ export function ProfileSheet({ user, userdetails }: profileSheetProps) {
             <p className="text-sm">{user.email}</p>
           </div>
           <div className="p-4 shadow-lg rounded-md">
-
             <p className="text-[#00d1cd]">{userdetails.bio}</p>
           </div>
         </div>

@@ -30,7 +30,7 @@ type NavbarProps = {
    */
   showCreatePoem?: boolean;
 
-  userdetails : finalForm;
+  userdetails: finalForm;
 };
 
 /**
@@ -39,7 +39,7 @@ type NavbarProps = {
 export default function Navbar({
   loggedUser,
   showCreatePoem = true,
-  userdetails
+  userdetails,
 }: NavbarProps) {
   return (
     <div className="lg:w-2/3 mx-auto my-5 flex justify-between  bg-white h-20 dark:bg-dark">
@@ -68,7 +68,7 @@ export default function Navbar({
         )}
 
         {loggedUser ? (
-          <ProfileSheet user={loggedUser} userdetails={userdetails}/>
+          <ProfileSheet user={loggedUser} userdetails={userdetails} />
         ) : (
           <Link to="/login" className="group/login">
             <Button
