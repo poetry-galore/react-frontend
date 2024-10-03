@@ -1,3 +1,5 @@
+import { finalForm } from "~/routes/profile";
+import type { User } from "~/auth/authenticator.server";
 import { Button } from "./ui/button";
 import {
   Sheet,
@@ -6,33 +8,47 @@ import {
   SheetDescription,
   SheetFooter,
   SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar"
+
 import { Form, Link } from "@remix-run/react";
 import { LogOutIcon } from "lucide-react";
 
-export function ProfileSheet() {
+
+type profileSheetProps = {
+  user: User,
+  userdetails: finalForm
+
+}
+export function ProfileSheet({ user, userdetails }: profileSheetProps) {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant={"outline"}>User Details</Button>
+        <Avatar>
+          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
+
       </SheetTrigger>
 
       <SheetContent>
-        <SheetHeader>A slight display of your details</SheetHeader>
+        <SheetHeader></SheetHeader>
         <SheetDescription>.........................</SheetDescription>
-        <div className="grid gap-4 py-4">
-          <div className="">
-            <p> email: test@dummy</p>
-            <p> 5 poems posted</p>
-            <p> 34 poems bookmarked</p>
+        <div className="grid gap-1 py-3 text-[#00d1cd]">
+          <div className="p-4 place-content-center  rounded-lg">
+            <p className="text-xl font-semibold">{userdetails.penName}</p>
+            <p className="text-sm">{user.email}</p>
+          </div>
+          <div className="p-4 shadow-lg rounded-md">
+
+            <p className="text-[#00d1cd]">{userdetails.bio}</p>
           </div>
         </div>
         <SheetFooter>
-          <SheetClose>
+          <SheetClose className="gap-4  place-content-between space-y-8">
             <Link to={"/profile"}>
-              <Button variant={"outline"}>Update your details!</Button>
+              <Button variant={"secondary"}>Update your details!</Button>
             </Link>
 
             <Form method="post" action="/logout" className="group/logout">

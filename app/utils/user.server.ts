@@ -25,6 +25,7 @@ export type userUpdate = {
   bio: string | null;
 };
 
+
 /**
  * Creates a new user and adds them to the database.
  *
@@ -64,5 +65,19 @@ export async function updateUser(
     profilePicture: updatedUser.profileP,
     penName: updatedUser.penName ? updatedUser.penName : "pick a name",
     bio: updatedUser.bio ? updatedUser.bio : "update your bio",
+  };
+}
+
+
+export async function getUserDetails(userId: string): Promise<userUpdate> {
+  const userDetails = await prisma.user.findFirstOrThrow({
+    where:{ id: userId}
+  });
+
+  return {
+    email: userDetails.email,
+    profilePicture: userDetails.profileP,
+    penName: userDetails.penName,
+    bio: userDetails.bio,
   };
 }

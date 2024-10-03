@@ -25,7 +25,7 @@ authenticator.use(
       throw Error("Invalid credentials");
     }
 
-    return { userId: user.id, email: user.email };
+    return { userId: user.id, email: user.email , penName: user.penName, bio: user.bio};
   }),
   EMAIL_PASSWORD_STRATEGY,
 );

@@ -9,6 +9,7 @@ import { ProfileSheet } from "./sheet";
 
 // Authentication
 import type { User } from "~/auth/authenticator.server";
+import { finalForm } from "~/routes/profile";
 
 // ROUTES
 /**
@@ -28,6 +29,8 @@ type NavbarProps = {
    * @default true
    */
   showCreatePoem?: boolean;
+
+  userdetails : finalForm;
 };
 
 /**
@@ -36,6 +39,7 @@ type NavbarProps = {
 export default function Navbar({
   loggedUser,
   showCreatePoem = true,
+  userdetails
 }: NavbarProps) {
   return (
     <div className="lg:w-2/3 mx-auto my-5 flex justify-between  bg-white h-20 dark:bg-dark">
@@ -64,7 +68,7 @@ export default function Navbar({
         )}
 
         {loggedUser ? (
-          <ProfileSheet />
+          <ProfileSheet user={loggedUser} userdetails={userdetails}/>
         ) : (
           <Link to="/login" className="group/login">
             <Button
