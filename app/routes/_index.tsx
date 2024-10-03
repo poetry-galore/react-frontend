@@ -26,11 +26,17 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   // Get authenticated user if there is one
   const user = await authenticator.isAuthenticated(clonedRequest);
+  const poems = await getPoemsAndAuthors(15);
+
+  if (!user) {
+    return json({
+      user,
+      poems
+    })
+  }
 
   
   const userDetails = await getUserDetails(user.userId)
-
-  const poems = await getPoemsAndAuthors(15);
 
   return json({
     user,
