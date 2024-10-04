@@ -7,7 +7,7 @@ import {
   replace,
 } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ClientOnly } from "remix-utils/client-only";
 
 // Components
@@ -25,6 +25,9 @@ import {
 
 // Authentication
 import { authenticationRequired } from "~/auth/authenticator.server";
+
+import { TitleInput } from "~/components/input";
+import { EDIT_POEM_CONFIG_NAME } from "~/routes/_poems";
 
 // ROUTES
 /**
@@ -82,33 +85,10 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function EditPoem() {
   const { poem, user } = useLoaderData<typeof loader>();
 
-  const [editorStateJSON, setEditorStateJSON] = useState<any>();
   const [editorStateHTML, setEditorStateHTML] = useState<string>();
   const [isEmpty, setIsEmpty] = useState<boolean>(true);
 
-  const [title, setTitle] = useState<string>("");
-
-  /**
-   * Set the title to the first statement
-   */
-  useEffect(() => {
-    try {
-      let index = 0;
-      // Get the text in a node at given index
-      const nodeText = (index: number) =>
-        editorStateJSON?.root?.children[index]?.children[0]?.text;
-
-      do {
-        setTitle(nodeText(index));
-        index++;
-      } while (
-        index < editorStateJSON?.root.children.length &&
-        !nodeText(index === 0 ? 0 : index - 1)
-      );
-    } catch (error: any) {
-      console.log(error);
-    }
-  }, [editorStateJSON]);
+  const [title, setTitle] = useState<string>(poem.title);
 
   /**
    * Callback called when the editor updates.
@@ -119,7 +99,6 @@ export default function EditPoem() {
    */
   function onChange(customEditorState: CustomEditorState, tags?: Set<string>) {
     setIsEmpty(customEditorState.isEmpty());
-    setEditorStateJSON(customEditorState.toJSON());
     setEditorStateHTML(customEditorState.toHTML());
   }
 
@@ -138,16 +117,26 @@ export default function EditPoem() {
         </div>
         {/** Editor */}
         <div className="w-5/6 lg:w-1/2">
-          <ClientOnly fallback={<div>Loading... </div>}>
-            {() => {
-              return (
-                <RichTextEditor
-                  onEditorChange={[{ onChange, ignoreSelectionChange: true }]}
-                  initialEditorState={poem?.content}
-                />
-              );
-            }}
-          </ClientOnly>
+          <TitleInput
+            name="title"
+            value={title}
+            placeholder="Title"
+            onChange={(event) => setTitle(event.currentTarget.value)}
+          />
+
+          <div className="ps-5">
+            <ClientOnly fallback={<div>Loading... </div>}>
+              {() => {
+                return (
+                  <RichTextEditor
+                    onEditorChange={[{ onChange, ignoreSelectionChange: true }]}
+                    initialEditorState={poem?.content}
+                    configName={EDIT_POEM_CONFIG_NAME}
+                  />
+                );
+              }}
+            </ClientOnly>
+          </div>
         </div>
         <div className="w-1/4 sticky top-10 flex flex-col items-start ms-5">
           <div className="flex space-x-2 items-center mb-5">
