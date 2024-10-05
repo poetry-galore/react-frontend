@@ -1,6 +1,8 @@
-import moment from "moment";
 import { Link } from "@remix-run/react";
-import { FeatherIcon, CalendarClockIcon } from "lucide-react";
+import moment from "moment";
+
+// Icons
+import { CalendarClockIcon, FeatherIcon } from "lucide-react";
 
 import {
   Card,
@@ -10,8 +12,6 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
 
 import { cn } from "~/lib/utils";
 

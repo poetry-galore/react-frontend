@@ -1,14 +1,15 @@
-import { Form, Link } from "@remix-run/react";
+import { Link } from "@remix-run/react";
 
 // Components
-import { LogInIcon, LogOutIcon } from "lucide-react";
+import { LogInIcon } from "lucide-react";
+import { NavbarLogo } from "~/components/logo";
 import { ThemeToggle } from "~/components/theme-toggler";
 import { Button } from "~/components/ui/button";
-import { NavbarLogo } from "~/components/logo";
 import { ProfileSheet } from "./sheet";
 
 // Authentication
 import type { User } from "~/auth/authenticator.server";
+
 import { finalForm } from "~/routes/profile";
 
 // ROUTES

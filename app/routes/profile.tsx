@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ActionFunctionArgs,
   LoaderFunctionArgs,
@@ -5,14 +6,16 @@ import {
   redirect,
 } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-import { authenticationRequired } from "~/auth/authenticator.server";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+// Authentication
+import { authenticationRequired } from "~/auth/authenticator.server";
+
 // Components
+import { LogoIcon } from "~/components/logo";
+import { ThemeToggle } from "~/components/theme-toggler";
 import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
 import {
   Form,
   FormControl,
@@ -22,19 +25,18 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
-
-import { formSchema } from "~/profile/ProfileSchema";
-import { updateUser } from "~/utils/user.server";
+import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
-import { uploadPhoto } from "~/profile/supaBaseClient";
-import React, { useState } from "react";
-import { LogoIcon } from "~/components/logo";
-import { ThemeToggle } from "~/components/theme-toggler";
-import { getSession } from "~/auth/session.server";
+
+// Profile
+import { formSchema } from "~/profile/ProfileSchema";
 import {
   commitUserDetailsSession,
   getUserDetailsSession,
 } from "~/profile/session.server";
+
+// Database
+import { updateUser } from "~/utils/user.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const clonedRequest = request.clone();
