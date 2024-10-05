@@ -1,64 +1,100 @@
+import { Form, Link } from "@remix-run/react";
 import { finalForm } from "~/routes/profile";
-import type { User } from "~/auth/authenticator.server";
+
+// Components
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { BottomTooltip } from "./tooltip";
 import { Button } from "./ui/button";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTrigger,
 } from "./ui/sheet";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 
-import { Form, Link } from "@remix-run/react";
-import { LogOutIcon } from "lucide-react";
+// Icons
+import { LogOutIcon, SquareUserRound, UserRound } from "lucide-react";
+
+// Authentication
+import type { User } from "~/auth/authenticator.server";
 
 type profileSheetProps = {
   user: User;
   userdetails: finalForm;
 };
+
 export function ProfileSheet({ user, userdetails }: profileSheetProps) {
   return (
     <Sheet>
-      <SheetTrigger asChild>
-        <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
-      </SheetTrigger>
+      <BottomTooltip content="profile" delayDuration={100}>
+        <SheetTrigger asChild className="cursor-pointer">
+          <Avatar>
+            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+        </SheetTrigger>
+      </BottomTooltip>
 
-      <SheetContent>
-        <SheetHeader></SheetHeader>
-        <SheetDescription>.........................</SheetDescription>
-        <div className="grid gap-1 py-3 text-[#00d1cd]">
-          <div className="p-4 place-content-center  rounded-lg">
-            <p className="text-xl font-semibold">{userdetails.penName}</p>
-            <p className="text-sm">{user.email}</p>
-          </div>
-          <div className="p-4 shadow-lg rounded-md">
-            <p className="text-[#00d1cd]">{userdetails.bio}</p>
-          </div>
-        </div>
-        <SheetFooter>
-          <SheetClose className="gap-4  place-content-between space-y-8">
-            <Link to={"/profile"}>
-              <Button variant={"secondary"}>Update your details!</Button>
-            </Link>
-
-            <Form method="post" action="/logout" className="group/logout">
-              <Button
-                size={"default"}
-                className="text-lg font-semibold border-none text-red-500 bg-inherit hover:bg-inherit hover:text-red-400 rounded-lg dark:text-red-500 dark:bg-inherit hover:dark:bg-inherit hover:dark:text-red-400"
-                variant={"secondary"}
-                type="submit"
+      <SheetContent className="p-4 rounded-2xl dark:border-s-gray-800 w-[350px]">
+        <div className="pb-4 border-b dark:border-b-gray-800">
+          <SheetHeader className="flex flex-row justify-start items-start pb-4">
+            {" "}
+            <Avatar>
+              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <div className="ps-4">
+              <p
+                className=" font-semibold text-lg"
+                style={{ lineHeight: "1em" }}
               >
-                Logout
-                <LogOutIcon className="ms-1 w-4 h-4 group-hover/logout:translate-x-1.5 group-hover/logout:scale-110 duration-300 motion-reduce:scale-0 motion-reduce:translate-x-0" />
-              </Button>
-            </Form>
-          </SheetClose>
+                {userdetails.penName}
+              </p>
+              <p
+                className="text-sm text-slate-400"
+                style={{ lineHeight: "1em" }}
+              >
+                {user.email}
+              </p>
+            </div>
+          </SheetHeader>
+
+          <SheetDescription className="pt-2">
+            <div
+              className="text-lg text-slate-300 flex items-center mb-1"
+              style={{ lineHeight: "1em" }}
+            >
+              <SquareUserRound className="w-4 h-4 me-2" />
+              Your Bio
+            </div>
+            {userdetails.bio}
+          </SheetDescription>
+        </div>
+
+        {/* Other User Details */}
+        <div className="py-3 border-b dark:border-b-gray-800">
+          <Link to={"/profile"}>
+            <div className="flex items-center justify-start">
+              <UserRound className="w-4 h-4 me-2" />
+              Your Profile
+            </div>
+          </Link>
+        </div>
+
+        <SheetFooter className="flex flex-col sm:justify-start sm:items-start sm:space-x-0">
+          <Form method="post" action="/logout">
+            <Button
+              size={"default"}
+              className="text-lg ps-0 font-semibold border-none hover:no-underline text-red-500 bg-inherit hover:bg-inherit hover:text-red-400 rounded-lg dark:text-red-500 dark:bg-inherit hover:dark:bg-inherit hover:dark:text-red-400"
+              variant={"link"}
+              type="submit"
+            >
+              <LogOutIcon className="me-2 w-4 h-4" />
+              Logout
+            </Button>
+          </Form>
         </SheetFooter>
       </SheetContent>
     </Sheet>
