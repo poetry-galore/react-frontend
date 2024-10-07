@@ -13,8 +13,8 @@ type BottomTooltipProps = {
 } & TooltipProps;
 
 /**
-* Tooltip displayed at the bottom of the trigger element.
-*/
+ * Tooltip displayed at the bottom of the trigger element.
+ */
 export function BottomTooltip(props: BottomTooltipProps) {
   const { children, content, ...rest } = props;
 
