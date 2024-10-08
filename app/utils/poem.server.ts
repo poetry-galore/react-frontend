@@ -4,8 +4,8 @@
 
 import { Poem, Prisma } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { prisma } from "~/db/prisma.server";
 import { User } from "~/auth/authenticator.server";
+import { prisma } from "~/db/prisma.server";
 
 /**
  * Type of the expected poem data when creating a poem.
@@ -94,8 +94,22 @@ export async function updatePoem(poemId: string, poemUpdate: PoemUpdateType) {
  * @param poemId Id of the poem to delete
  * @returns The deleted poem
  */
-export async function deletePoem(poemId: string) {
+async function _deletePoem(poemId: string) {
   return await prisma.poem.delete({ where: { id: poemId } });
+}
+
+/**
+ * Deletes a poem if poem's author is the given user else an error is thrown.
+ *
+ * @param poem Poem to delete
+ * @param user Author of the poem
+ */
+export async function deletePoemForUser(poem: Poem, user: User) {
+  if (poem.authorId === user.userId) {
+    await _deletePoem(poem.id);
+  } else {
+    throw new Response(null, { status: 403, statusText: "Not allowed" });
+  }
 }
 
 /**
