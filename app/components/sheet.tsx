@@ -27,25 +27,24 @@ type profileSheetProps = {
 };
 
 export function ProfileSheet({ user, userdetails }: profileSheetProps) {
-
   const listOfBookmarks = [
     {
-      title: 'my new poem',
-      userid: 34
+      title: "my new poem",
+      userid: 34,
     },
     {
-      title: 'my new poem',
-      userid: 34
+      title: "my new poem",
+      userid: 34,
     },
     {
-      title: 'my new poem',
-      userid: 34
-    }
-    ,{
-      title: 'my new poem',
-      userid: 34
-    }
-  ]
+      title: "my new poem",
+      userid: 34,
+    },
+    {
+      title: "my new poem",
+      userid: 34,
+    },
+  ];
   return (
     <Sheet>
       <BottomTooltip content="profile" delayDuration={100}>
@@ -103,8 +102,10 @@ export function ProfileSheet({ user, userdetails }: profileSheetProps) {
           </Link>
         </div>
         <div className=" border-b dark:border-b-gray-800 flex flex-col items-center justify-start">
-          <h2 className="flex p-4"><Star className="w-5 h-5 me-2"/> Bookmarks</h2>
-          <BookmarksCard listOfBookmarks={listOfBookmarks}/>
+          <h2 className="flex p-4">
+            <Star className="w-5 h-5 me-2" /> Bookmarks
+          </h2>
+          <BookmarksCard listOfBookmarks={listOfBookmarks} />
         </div>
 
         <SheetFooter className="flex flex-col sm:justify-start sm:items-start sm:space-x-0">

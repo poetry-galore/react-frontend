@@ -67,19 +67,20 @@ export async function updateUser(
   };
 }
 
-export async function getUserDetails(userId: string | null ): Promise<userUpdate | null> {
-
+export async function getUserDetails(
+  userId: string | null,
+): Promise<userUpdate | null> {
   if (userId) {
     const userDetails = await prisma.user.findFirstOrThrow({
-    where: { id: userId },
-  });
+      where: { id: userId },
+    });
 
-  return {
-    email: userDetails.email,
-    profilePicture: userDetails.profileP,
-    penName: userDetails.penName,
-    bio: userDetails.bio,
-  };
+    return {
+      email: userDetails.email,
+      profilePicture: userDetails.profileP,
+      penName: userDetails.penName,
+      bio: userDetails.bio,
+    };
   }
 
   return null;
