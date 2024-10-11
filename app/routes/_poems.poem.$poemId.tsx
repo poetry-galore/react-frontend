@@ -14,6 +14,7 @@ import { getPoemAndAuthorOrThrow } from "~/utils/poem.server";
 
 // Authentication
 import { authenticatedUser } from "~/auth/authenticator.server";
+import { getUserDetails } from "~/utils/user.server";
 
 // ROUTES
 /**
@@ -32,16 +33,21 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   const poem = await getPoemAndAuthorOrThrow(poemId ? poemId : "");
   const user = await authenticatedUser(request);
+  const userDetails = await getUserDetails(user.userId);
 
-  return json({ poem, user });
+  return json({ poem, user, userDetails });
 }
 
 export default function ShowPoem() {
-  const { poem, user } = useLoaderData<typeof loader>();
+  const { poem, user, userDetails } = useLoaderData<typeof loader>();
 
   return (
     <>
-      <Navbar loggedUser={user} showCreatePoem={false} />
+      <Navbar
+        loggedUser={user}
+        showCreatePoem={false}
+        userdetails={userDetails}
+      />
       <div className="flex gap-6 justify-center">
         <PoemCard
           className="outfit"

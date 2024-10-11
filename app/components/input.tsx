@@ -40,6 +40,29 @@ export function AuthInput({ name, label, ...rest }: InputProps) {
   );
 }
 
+export function ProfileInput({ name, label, ...rest }: InputProps) {
+  const { error, getInputProps } = useField(name);
+  const className = rest.className;
+
+  delete rest.className;
+
+  return (
+    <div className={cn("space-y-2", className)}>
+      <label className="font-semibold text-sm select-none" htmlFor={name}>
+        {label}
+      </label>
+      <Input
+        className="text-gray-900 text-sm rounded-lg block w-full transition-none focus-visible:ring-2 dark:bg-dark dark:placeholder-gray-400 dark:text-white"
+        {...getInputProps({ id: name })}
+        {...rest}
+        autoComplete="false"
+      />
+
+      {error && (
+        <p className="text-sm text-red-600 dark:text-red-500">{error}</p>
+      )}
+    </div>
+
 /**
  * Input for a title in the new and edit poem pages.
  */
@@ -62,5 +85,6 @@ export function TitleInput({ name, ...rest }: TextareaProps) {
       ref={textAreaRef}
       rows={1}
     />
+
   );
 }

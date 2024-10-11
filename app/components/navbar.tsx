@@ -1,13 +1,16 @@
-import { Form, Link } from "@remix-run/react";
+import { Link } from "@remix-run/react";
 
 // Components
-import { LogInIcon, LogOutIcon } from "lucide-react";
+import { LogInIcon } from "lucide-react";
+import { NavbarLogo } from "~/components/logo";
 import { ThemeToggle } from "~/components/theme-toggler";
 import { Button } from "~/components/ui/button";
-import { NavbarLogo } from "~/components/logo";
+import { ProfileSheet } from "./sheet";
 
 // Authentication
 import type { User } from "~/auth/authenticator.server";
+
+import { finalForm } from "~/routes/profile";
 
 // ROUTES
 /**
@@ -27,6 +30,8 @@ type NavbarProps = {
    * @default true
    */
   showCreatePoem?: boolean;
+
+  userdetails: finalForm;
 };
 
 /**
@@ -35,6 +40,7 @@ type NavbarProps = {
 export default function Navbar({
   loggedUser,
   showCreatePoem = true,
+  userdetails,
 }: NavbarProps) {
   return (
     <div className="lg:w-2/3 mx-auto my-5 flex justify-between  bg-white h-20 dark:bg-dark">
@@ -63,17 +69,7 @@ export default function Navbar({
         )}
 
         {loggedUser ? (
-          <Form method="post" action="/logout" className="group/logout">
-            <Button
-              size={"default"}
-              className="text-lg font-semibold border-none text-red-500 bg-inherit hover:bg-inherit hover:text-red-400 rounded-lg dark:text-red-500 dark:bg-inherit hover:dark:bg-inherit hover:dark:text-red-400"
-              variant={"secondary"}
-              type="submit"
-            >
-              Logout
-              <LogOutIcon className="ms-1 w-4 h-4 group-hover/logout:translate-x-1.5 group-hover/logout:scale-110 duration-300 motion-reduce:scale-0 motion-reduce:translate-x-0" />
-            </Button>
-          </Form>
+          <ProfileSheet user={loggedUser} userdetails={userdetails} />
         ) : (
           <Link to="/login" className="group/login">
             <Button
