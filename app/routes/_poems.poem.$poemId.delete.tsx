@@ -1,11 +1,8 @@
 import { ActionFunctionArgs, redirect } from "@remix-run/node";
 
 // Database
-import { Poem } from "@prisma/client";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import {
-  deletePoem,
-  getPoemWithId,
+  deletePoemForUser,
   getPoemWithIdForUserOrThrow,
 } from "~/utils/poem.server";
 
@@ -24,23 +21,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const poemId = params.poemId;
   const poem = await getPoemWithIdForUserOrThrow(poemId ? poemId : "", user);
 
-  await deletePoem(poem.id);
-
-  // try {
-  //   if (poemId) poem = await getPoemWithId(poemId);
-  // } catch (error: any) {
-  //   if (error instanceof PrismaClientKnownRequestError) {
-  //     throw new Response(null, { status: 404, statusText: "Poem not found" });
-  //   } else {
-  //     throw error;
-  //   }
-  // }
-
-  // if (poem?.authorId === user.userId) {
-  //   await deletePoem(poem.id);
-  // } else {
-  //   throw new Response(null, { status: 403, statusText: "Not allowed" });
-  // }
+  await deletePoemForUser(poem, user);
 
   // TODO: Redirect to the previous route before the 'poem/$poemId' route was visited
   return redirect("/");

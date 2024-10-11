@@ -1,25 +1,28 @@
-import RichTextEditor from "@poetry-galore/rich-text-editor";
+import { RichTextEditor } from "@poetry-galore/rich-text-editor";
 import type { CustomEditorState } from "@poetry-galore/types";
 import {
   ActionFunctionArgs,
   json,
   LoaderFunctionArgs,
-  redirect,
+  replace,
 } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // Components
-import { LogoIcon } from "~/components/logo";
-import { Button } from "~/components/ui/button";
-import { ThemeToggle } from "~/components/theme-toggler";
 import { UserAvatar } from "~/components/avatar";
+import { LogoIcon } from "~/components/logo";
+import { ThemeToggle } from "~/components/theme-toggler";
+import { Button } from "~/components/ui/button";
 
 // Authentication
 import { authenticationRequired } from "~/auth/authenticator.server";
 
 // Database
+import { TitleInput } from "~/components/input";
 import { createPoem, type PoemCreateType } from "~/utils/poem.server";
+
+import { NEW_POEM_CONFIG_NAME } from "~/routes/_poems";
 
 // ROUTES
 /**
@@ -57,7 +60,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const newPoem = await createPoem(poemCreate);
 
-  return redirect(POEM_ROUTE(newPoem.id));
+  return replace(POEM_ROUTE(newPoem.id));
 }
 
 /**
@@ -66,31 +69,10 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function NewPoem() {
   const { user } = useLoaderData<typeof loader>();
 
-  const [editorStateJSON, setEditorStateJSON] = useState<any>();
   const [editorStateHTML, setEditorStateHTML] = useState<string>();
   const [isEmpty, setIsEmpty] = useState<boolean>(true);
 
   const [title, setTitle] = useState<string>("");
-
-  /** Set the title to the first statement */
-  useEffect(() => {
-    try {
-      let index = 0;
-      // Get the text in a node at given index
-      const nodeText = (index: number) =>
-        editorStateJSON?.root?.children[index]?.children[0]?.text;
-
-      do {
-        setTitle(nodeText(index));
-        index++;
-      } while (
-        index < editorStateJSON?.root.children.length &&
-        !nodeText(index === 0 ? 0 : index - 1)
-      );
-    } catch (error: any) {
-      console.log(error);
-    }
-  }, [editorStateJSON]);
 
   /**
    * Callback called when the editor updates.
@@ -101,7 +83,6 @@ export default function NewPoem() {
    */
   function onChange(customEditorState: CustomEditorState, tags?: Set<string>) {
     setIsEmpty(customEditorState?.isEmpty());
-    setEditorStateJSON(customEditorState?.toJSON());
     setEditorStateHTML(customEditorState?.toHTML());
   }
 
@@ -109,17 +90,31 @@ export default function NewPoem() {
     <>
       <div className="relative flex items-start pt-10">
         <div className="w-1/12 lg:w-1/4 sticky top-10">
-          <Link to="/">
-            <LogoIcon className="max-w-20" />
-          </Link>
+          <div className="max-w-20">
+            <Link to="/">
+              <LogoIcon className="max-w-20" />
+            </Link>
+          </div>
 
           <ThemeToggle className="ms-2.5 mt-5" />
         </div>
         {/** Editor */}
         <div className="w-5/6 lg:w-1/2">
-          <RichTextEditor
-            onEditorChange={[{ onChange, ignoreSelectionChange: true }]}
-          />
+          <div className="w-11/12 mb-5">
+            <TitleInput
+              name="title"
+              value={title}
+              placeholder="Title"
+              onChange={(event) => setTitle(event.currentTarget.value)}
+            />
+          </div>
+
+          <div className="ps-5">
+            <RichTextEditor
+              onEditorChange={[{ onChange, ignoreSelectionChange: true }]}
+              configName={NEW_POEM_CONFIG_NAME}
+            />
+          </div>
         </div>
         <div className="w-1/4 sticky top-10 flex flex-col items-start ms-5">
           <div className="flex space-x-2 items-center mb-5">

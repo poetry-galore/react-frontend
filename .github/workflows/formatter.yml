@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: 20
 
-      - run: mv package.json _package.json && npm i $(node -e "let d=require('./_package.json').devDependencies,o='';Object.keys(d).forEach((e=>{o+=e+'@'+d[e]+' '})),console.log(o);") && mv _package.json package.json
+      - run: mv package.json _package.json && mv package-lock.json _package-lock.json && npm i $(node -e "let d=require('./_package.json').devDependencies,o='';Object.keys(d).forEach((e=>{o+=e+'@'+d[e]+' '})),console.log(o);") && mv _package.json package.json && mv _package-lock.json package-lock.json
       - run: npm run format:write
 
       - name: Commit changes

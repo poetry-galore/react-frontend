@@ -1,12 +1,13 @@
 import { json, LoaderFunctionArgs } from "@remix-run/node";
-import { Form, Link, useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 
 // Components
-import Navbar from "~/components/navbar";
-import Markup from "~/components/markup";
-import { Button } from "~/components/ui/button";
-import { PoemCard } from "~/components/card";
 import { DeleteIcon, Edit3Icon } from "lucide-react";
+import { PoemCard } from "~/components/card";
+import { PoemDeleteDialog } from "~/components/dialog";
+import Markup from "~/components/markup";
+import Navbar from "~/components/navbar";
+import { Button } from "~/components/ui/button";
 
 // Database
 import { getPoemAndAuthorOrThrow } from "~/utils/poem.server";
@@ -50,11 +51,12 @@ export default function ShowPoem() {
       <div className="flex gap-6 justify-center">
         <PoemCard
           className="outfit"
-          // @ts-expect-error
+          // @ts-expect-error JsonifyObject Type does not match the PoemWithAuthor
           poem={poem}
         >
           <Markup content={poem?.content} />
         </PoemCard>
+
         {/** Show action buttons if user is logged in and is the author */}
         {user && user.userId === poem.authorId && (
           <div className="flex items-start">
@@ -71,28 +73,21 @@ export default function ShowPoem() {
             </Link>
 
             {/** Delete */}
-            <Form
+            <PoemDeleteDialog
+              trigger={
+                <Button
+                  size={"sm"}
+                  className="my-4 me-3 text-base font-semibold hover:text-red-600 dark:hover:text-red-600"
+                  variant={"link"}
+                  type="submit"
+                >
+                  <DeleteIcon className="h-4 w-4 me-1 mb-1" />
+                  Delete
+                </Button>
+              }
               action="delete"
-              method="post"
-              onSubmit={(event) => {
-                const response = confirm(
-                  "Please confirm you want to delete this poem.",
-                );
-                if (!response) {
-                  event.preventDefault();
-                }
-              }}
-            >
-              <Button
-                size={"sm"}
-                className="my-4 me-3 text-base font-semibold hover:text-red-600 dark:hover:text-red-600"
-                variant={"link"}
-                type="submit"
-              >
-                <DeleteIcon className="h-4 w-4 me-1 mb-1" />
-                Delete
-              </Button>
-            </Form>
+              poemTitle={poem.title}
+            />
           </div>
         )}
       </div>
