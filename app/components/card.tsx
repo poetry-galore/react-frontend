@@ -2,7 +2,7 @@ import { Link } from "@remix-run/react";
 import moment from "moment";
 
 // Icons
-import { CalendarClockIcon, FeatherIcon } from "lucide-react";
+import { CalendarClockIcon, FeatherIcon , Bookmark} from "lucide-react";
 
 import {
   Card,
@@ -16,6 +16,7 @@ import {
 import { cn } from "~/lib/utils";
 
 import { PoemWithAuthor } from "~/utils/poem.server";
+import { title } from "process";
 
 // ROUTES
 const POEM_ROUTE = (poemId: string) => `/poem/${poemId.trim()}`;
@@ -97,8 +98,8 @@ export function PoemCard({ poem, children, className }: PoemCardProps) {
         {children}
       </CardContent>
 
-      <CardFooter className="flex justify-end items-center p-0 italic text-sm text-slate-400 dark:text-slate-600">
-        <CalendarClockIcon className="h-4 w-4 me-1" /> {updatedAt}
+      <CardFooter className="flex justify-evenly items-center p-0 italic text-sm text-slate-400 dark:text-slate-600 space-x-80">
+        <Bookmark className="h-7 w-5 cursor-pointer"/> <div className="flex justify-self-end"><CalendarClockIcon className="h-4 w-4 me-1" /> {updatedAt}</div> 
       </CardFooter>
     </Card>
   );
@@ -123,4 +124,22 @@ export function ProfileCard({ children, className }: ProfileCardProps) {
       <CardFooter>This is the card footer</CardFooter>
     </Card>
   );
+}
+
+
+
+export function BookmarksCard({listOfBookmarks}) {
+  return (
+    <Card className="w-full border-0">
+      <CardContent  className="space-y-4">
+        {listOfBookmarks.map((bookmark) => {
+          return (
+            <div key={bookmark.userid} className=" cursor-pointer border  rounded-xl text-center p-2">
+              <h3>{bookmark.title}</h3>
+            </div>
+          )
+        })}
+      </CardContent>
+    </Card>
+  )
 }

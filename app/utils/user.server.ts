@@ -31,7 +31,7 @@ export type userUpdate = {
  * @param user User Data
  * @returns Object of the user's id and email
  */
-export async function createUser(user: RegisterForm): Promise<UserOut> {
+export async function createUser(user: RegisterForm): Promise<UserOut | null> {
   const passwordHash = await bcrypt.hash(user.password, 10);
 
   const newUser = await prisma.user.create({
@@ -67,8 +67,10 @@ export async function updateUser(
   };
 }
 
-export async function getUserDetails(userId: string): Promise<userUpdate> {
-  const userDetails = await prisma.user.findFirstOrThrow({
+export async function getUserDetails(userId: string | null ): Promise<userUpdate | null> {
+
+  if (userId) {
+    const userDetails = await prisma.user.findFirstOrThrow({
     where: { id: userId },
   });
 
@@ -78,4 +80,7 @@ export async function getUserDetails(userId: string): Promise<userUpdate> {
     penName: userDetails.penName,
     bio: userDetails.bio,
   };
+  }
+
+  return null;
 }
