@@ -21,7 +21,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const poemId = params.poemId;
   const poem = await getPoemWithIdForUserOrThrow(poemId ? poemId : "", user);
 
-  await deletePoemForUser(poem, user);
+  try {
+    await deletePoemForUser(poem, user);
+  } catch (error: unknown) {
+    // user is not author of the poem.
+    return error;
+  }
 
   // TODO: Redirect to the previous route before the 'poem/$poemId' route was visited
   return redirect("/");
