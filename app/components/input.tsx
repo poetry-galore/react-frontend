@@ -62,6 +62,8 @@ export function ProfileInput({ name, label, ...rest }: InputProps) {
         <p className="text-sm text-red-600 dark:text-red-500">{error}</p>
       )}
     </div>
+  );
+}
 
 /**
  * Input for a title in the new and edit poem pages.
@@ -85,6 +87,5 @@ export function TitleInput({ name, ...rest }: TextareaProps) {
       ref={textAreaRef}
       rows={1}
     />
-
   );
 }
