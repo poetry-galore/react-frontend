@@ -1,5 +1,5 @@
 [build]
-command = "npm run build"
+command = "npm install @remix-run/dev && npm run build"
 publish = "build/client"
 
 [build.environment]
