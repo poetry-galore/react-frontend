@@ -4,18 +4,13 @@ import type {
   MetaFunction,
 } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { withZod } from "@remix-validated-form/with-zod";
-import { ValidatedForm, validationError } from "remix-validated-form";
 import { useLoaderData } from "@remix-run/react";
+import { validationError } from "remix-validated-form";
 
 // Components
-import { AuthCard } from "~/components/card";
-import { AuthInput } from "~/components/input";
-import { Button } from "~/components/ui/button";
+import AuthForm from "../_auth/components/form";
 
 // Authentication
-import { userSchemaRegister } from "~/auth/authSchema";
-import { register } from "~/auth/register.server";
 import {
   EMAIL_PASSWORD_STRATEGY,
   authenticator,
@@ -23,8 +18,8 @@ import {
   setAuthSessionError,
 } from "~/auth/authenticator.server";
 import { commitSession } from "~/auth/session.server";
-
-const validator = withZod(userSchemaRegister);
+import { register } from "./register.server";
+import { validator } from "./userSchema";
 
 export const meta: MetaFunction = () => {
   return [
@@ -85,39 +80,12 @@ export default function Register() {
   const { defaultValues } = useLoaderData<typeof loader>();
 
   return (
-    <>
-      <AuthCard title="Create an account" description="Create a new account">
-        <ValidatedForm
-          className="w-full"
-          method="POST"
-          validator={validator}
-          defaultValues={defaultValues}
-        >
-          <AuthInput
-            name="email"
-            label="Email"
-            placeholder="Your email..."
-            className="mb-4"
-          />
-          <AuthInput
-            name="password"
-            label="Password"
-            type="password"
-            placeholder="Your password..."
-            className=""
-          />
-          <div className="flex flex-col items-center space-y-4 mt-10">
-            <Button
-              className="w-full text-lg rounded-lg"
-              type="submit"
-              variant={"default"}
-              size={"lg"}
-            >
-              Register
-            </Button>
-          </div>
-        </ValidatedForm>
-      </AuthCard>
-    </>
+    <AuthForm
+      defaultValues={defaultValues}
+      validator={validator}
+      title="Create an account"
+      description="Create a new account"
+      action="Register"
+    />
   );
 }

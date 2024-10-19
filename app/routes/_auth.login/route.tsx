@@ -4,13 +4,9 @@ import type {
   MetaFunction,
 } from "@remix-run/node";
 import { json, useLoaderData } from "@remix-run/react";
-import { withZod } from "@remix-validated-form/with-zod";
-import { ValidatedForm } from "remix-validated-form";
 
 //Components
-import { AuthCard } from "~/components/card";
-import { AuthInput } from "~/components/input";
-import { Button } from "~/components/ui/button";
+import AuthForm from "../_auth/components/form";
 
 // Authentication
 import {
@@ -19,10 +15,8 @@ import {
   clearAuthSessionError,
   setAuthSessionError,
 } from "~/auth/authenticator.server";
-import { userSchemaLogin } from "~/auth/authSchema";
 import { commitSession } from "~/auth/session.server";
-
-const validator = withZod(userSchemaLogin);
+import { validator } from "./userShema";
 
 export const meta: MetaFunction = () => {
   return [
@@ -34,7 +28,9 @@ export const meta: MetaFunction = () => {
 export async function action({ request }: ActionFunctionArgs) {
   const clonedRequest = request.clone();
 
-  let redirectTo = (await clonedRequest.formData()).get("redirectTo") as string;
+  const redirectTo = (await clonedRequest.formData()).get(
+    "redirectTo",
+  ) as string;
 
   try {
     await authenticator.authenticate(EMAIL_PASSWORD_STRATEGY, request, {
@@ -89,40 +85,13 @@ export default function Login() {
   const { defaultValues, redirectTo } = useLoaderData<typeof loader>();
 
   return (
-    <>
-      <AuthCard title="Login" description="Authenticate into your account">
-        <ValidatedForm
-          className="w-full"
-          method="POST"
-          validator={validator}
-          defaultValues={defaultValues}
-        >
-          <AuthInput
-            name="email"
-            label="Email"
-            placeholder="Your email..."
-            className="mb-4"
-          />
-          <AuthInput
-            name="password"
-            label="Password"
-            type="password"
-            placeholder="Your password..."
-            className=""
-          />
-          <input hidden value={redirectTo} name="redirectTo" readOnly />
-          <div className="flex flex-col items-center space-y-4 mt-10">
-            <Button
-              className="w-full text-lg rounded-lg"
-              type="submit"
-              variant={"default"}
-              size={"lg"}
-            >
-              Login
-            </Button>
-          </div>
-        </ValidatedForm>
-      </AuthCard>
-    </>
+    <AuthForm
+      defaultValues={defaultValues}
+      validator={validator}
+      title="Login"
+      description="Login to your account"
+      action="Login"
+      redirectTo={redirectTo}
+    />
   );
 }

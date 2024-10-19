@@ -4,8 +4,8 @@
 
 import bcrypt from "bcryptjs";
 
-import { RegisterForm } from "~/auth/register.server";
 import { prisma } from "~/db/prisma.server";
+import { RegisterForm } from "~/routes/_auth.register/register.server";
 
 type UserOut = {
   id: string;
