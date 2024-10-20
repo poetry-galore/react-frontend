@@ -15,6 +15,7 @@ import { UserAvatar } from "~/components/avatar";
 import { LogoIcon } from "~/components/logo";
 import { ThemeToggle } from "~/components/theme-toggler";
 import { Button } from "~/components/ui/button";
+import { TitleInput } from "~/routes/_poems/components/input";
 
 // Database
 import {
@@ -26,8 +27,8 @@ import {
 // Authentication
 import { authenticationRequired } from "~/auth/authenticator.server";
 
-import { TitleInput } from "~/components/input";
-import { EDIT_POEM_CONFIG_NAME } from "~/routes/_poems";
+// Configuration
+import { EDIT_POEM_CONFIG_NAME } from "./editor.config";
 
 // ROUTES
 /**
@@ -97,7 +98,7 @@ export default function EditPoem() {
    * - Gets the JSON value of the editor content
    * - Gets the HTML value of the editor content
    */
-  function onChange(customEditorState: CustomEditorState, tags?: Set<string>) {
+  function onChange(customEditorState: CustomEditorState) {
     setIsEmpty(customEditorState.isEmpty());
     setEditorStateHTML(customEditorState.toHTML());
   }

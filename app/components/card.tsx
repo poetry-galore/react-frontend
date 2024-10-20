@@ -2,7 +2,7 @@ import { Link } from "@remix-run/react";
 import moment from "moment";
 
 // Icons
-import { CalendarClockIcon, FeatherIcon, Bookmark } from "lucide-react";
+import { Bookmark, CalendarClockIcon, FeatherIcon } from "lucide-react";
 
 import {
   Card,
@@ -16,45 +16,9 @@ import {
 import { cn } from "~/lib/utils";
 
 import { PoemWithAuthor } from "~/utils/poem.server";
-import { title } from "process";
 
 // ROUTES
 const POEM_ROUTE = (poemId: string) => `/poem/${poemId.trim()}`;
-
-type AuthCardProps = {
-  title?: string;
-  description?: string;
-} & React.AllHTMLAttributes<HTMLDivElement>;
-
-/**
- * Card used in authentication forms. ie. Login and register
- */
-export function AuthCard({
-  title,
-  description,
-  children,
-  className,
-}: AuthCardProps) {
-  return (
-    <Card
-      className={cn(
-        "w-11/12 md:w-[450px] shadow-none rounded-xl dark:bg-dark border-none",
-        className,
-      )}
-    >
-      {(title || description) && (
-        <CardHeader className="text-center">
-          {title && (
-            <CardTitle className="text-4xl font-semibold">{title}</CardTitle>
-          )}
-          {description && <CardDescription>{description}</CardDescription>}
-        </CardHeader>
-      )}
-      <CardContent>{children}</CardContent>
-      <CardFooter></CardFooter>
-    </Card>
-  );
-}
 
 type PoemCardProps = {
   poem: PoemWithAuthor;

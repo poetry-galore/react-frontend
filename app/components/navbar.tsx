@@ -10,7 +10,7 @@ import { ProfileSheet } from "./sheet";
 // Authentication
 import type { User } from "~/auth/authenticator.server";
 
-import { finalForm } from "~/routes/profile";
+import { ProfileFormType } from "~/routes/profile/route";
 
 // ROUTES
 /**
@@ -31,7 +31,7 @@ type NavbarProps = {
    */
   showCreatePoem?: boolean;
 
-  userdetails: finalForm;
+  userdetails: ProfileFormType;
 };
 
 /**

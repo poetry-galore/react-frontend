@@ -29,11 +29,11 @@ import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 
 // Profile
-import { formSchema } from "~/profile/ProfileSchema";
 import {
   commitUserDetailsSession,
   getUserDetailsSession,
 } from "~/profile/session.server";
+import { profileFormSchema } from "./profileSchema";
 
 // Database
 import { updateUser } from "~/utils/user.server";
@@ -48,7 +48,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   });
 }
 
-export type finalForm = {
+export type ProfileFormType = {
   penName: string | null;
   bio: string | null;
 };
@@ -60,7 +60,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const formData = await request.formData();
 
-  const userDetails: finalForm = {
+  const userDetails: ProfileFormType = {
     penName: formData.get("penName") as string,
     bio: formData.get("bio") as string,
   };
@@ -94,8 +94,8 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function Profile() {
   const user = useLoaderData<typeof loader>();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof profileFormSchema>>({
+    resolver: zodResolver(profileFormSchema),
     defaultValues: {
       penName: "",
       bio: "",

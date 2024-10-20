@@ -5,7 +5,7 @@ import { z } from "zod";
  *
  */
 
-export const formSchema = z.object({
+export const profileFormSchema = z.object({
   profilePicture: z.string().min(20, {
     message: "Must provide a path to the profile picture in the bucket",
   }),

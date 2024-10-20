@@ -16,7 +16,7 @@ import { Button } from "~/components/ui/button";
 
 // Authentication
 import { authenticator } from "~/auth/authenticator.server";
-import { getSession, commitSession } from "~/auth/session.server";
+import { commitSession, getSession } from "~/auth/session.server";
 import { ThemeToggle } from "~/components/theme-toggler";
 
 /**
@@ -33,8 +33,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
     successRedirect: redirectTo,
   });
 
-  let session = await getSession(request.headers.get("cookie"));
-  let error = session.get(authenticator.sessionErrorKey);
+  const session = await getSession(request.headers.get("cookie"));
+  const error = session.get(authenticator.sessionErrorKey);
 
   return json(
     { error, redirectTo },
