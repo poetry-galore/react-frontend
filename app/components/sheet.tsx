@@ -1,5 +1,5 @@
 import { Form, Link } from "@remix-run/react";
-import { finalForm } from "~/routes/profile";
+import { ProfileFormType } from "~/routes/profile/route";
 
 // Components
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
@@ -15,14 +15,14 @@ import {
 } from "./ui/sheet";
 
 // Icons
-import { LogOutIcon, SquareUserRound, UserRound, Star } from "lucide-react";
+import { LogOutIcon, SquareUserRound, Star, UserRound } from "lucide-react";
 
 // Authentication
 import type { User } from "~/auth/authenticator.server";
 
 type profileSheetProps = {
   user: User;
-  userdetails: finalForm;
+  userdetails: ProfileFormType;
 };
 
 export function ProfileSheet({ user, userdetails }: profileSheetProps) {
