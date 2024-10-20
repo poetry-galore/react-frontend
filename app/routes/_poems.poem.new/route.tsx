@@ -14,15 +14,16 @@ import { UserAvatar } from "~/components/avatar";
 import { LogoIcon } from "~/components/logo";
 import { ThemeToggle } from "~/components/theme-toggler";
 import { Button } from "~/components/ui/button";
+import { TitleInput } from "~/routes/_poems/components/input";
 
 // Authentication
 import { authenticationRequired } from "~/auth/authenticator.server";
 
 // Database
-import { TitleInput } from "~/components/input";
 import { createPoem, type PoemCreateType } from "~/utils/poem.server";
 
-import { NEW_POEM_CONFIG_NAME } from "~/routes/_poems";
+// Configuration
+import { NEW_POEM_CONFIG_NAME } from "./editor.config";
 
 // ROUTES
 /**
@@ -81,7 +82,7 @@ export default function NewPoem() {
    * - Sets the JSON value of the editor content
    * - Sets the HTML value of the editor content
    */
-  function onChange(customEditorState: CustomEditorState, tags?: Set<string>) {
+  function onChange(customEditorState: CustomEditorState) {
     setIsEmpty(customEditorState?.isEmpty());
     setEditorStateHTML(customEditorState?.toHTML());
   }
