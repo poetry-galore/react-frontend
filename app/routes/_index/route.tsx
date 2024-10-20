@@ -2,16 +2,15 @@ import { json, LoaderFunctionArgs, type MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
 // Components
-import Navbar from "~/components/navbar";
 import { PoemCard } from "~/components/card";
 import Markup from "~/components/markup";
+import Navbar from "~/components/navbar";
 
 // Authentication
 import { authenticator } from "~/auth/authenticator.server";
 
 // Database
 import { getPoemsAndAuthors } from "~/utils/poem.server";
-import { getUserDetailsSession } from "~/profile/session.server";
 import { getUserDetails } from "~/utils/user.server";
 
 export const meta: MetaFunction = () => {
@@ -32,6 +31,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     return json({
       user,
       poems,
+      userDetails: null,
     });
   }
 
@@ -54,7 +54,7 @@ export default function Index() {
         {poems.map((poem) => (
           <PoemCard
             key={poem.id}
-            // @ts-expect-error
+            // @ts-expect-error JsonifyObject Type does not match the PoemWithAuthor
             poem={poem}
           >
             <Markup content={poem.content} />
